@@ -62,13 +62,13 @@ class Grid {
                 const cell = this.cells[i][j];
 
                 if (binaryRepresentation.charAt(k++) != '0') {
-                    if (cell.north != null) {
+                    if (cell.north) {
                         cell.link(cell.north)
                     }
                 }
 
                 if (binaryRepresentation.charAt(k++) != '0') {
-                    if (cell.east != null) {
+                    if (cell.east) {
                         cell.link(cell.east)
                     }
                 }
