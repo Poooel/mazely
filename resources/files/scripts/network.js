@@ -21,3 +21,5 @@ function generateNewMaze(formData) {
     xmlHttp.open("GET", "/generate/" + generator + "?width=" + width + "&height=" + height, true)
     xmlHttp.send();
 }
+
+const getGenerators = () => fetch('/available/generator').then(resp => resp.json())

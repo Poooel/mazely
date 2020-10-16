@@ -45,9 +45,8 @@
           </div>
           <div class='field'>
               <label for="generator">Generator</label>
-              <select name="generator" id="generator">
+              <select name="generator" id="generator" disabled>
                   <option>Select an option</option>
-                  <option value="binary_tree">Binary tree</option>
               </select>
           </div>
           <button type="submit">Generate</button>
@@ -57,11 +56,6 @@
       // Populate window object with PaperScope
       paper.install(window)
       paper.setup('maze')
-
-      $('form').on('submit', e => {
-          e.preventDefault()
-          const formData = new FormData(e.currentTarget)
-          generateNewMaze(formData)
-      })
   </script>
+  <script src="/static/scripts/prepareSideBar.js"></script>
 </body>
