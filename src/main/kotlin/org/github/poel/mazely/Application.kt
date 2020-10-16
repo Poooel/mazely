@@ -13,10 +13,12 @@ import org.github.poel.mazely.generator.BinaryTree
 import org.github.poel.mazely.generator.Generators
 import org.github.poel.mazely.generator.Sidewinder
 import org.github.poel.mazely.solver.Solvers
-import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@ExperimentalUnsignedTypes
+@KtorExperimentalLocationsAPI
+@Suppress("unused")
 fun Application.module() {
     install(Locations)
 
@@ -72,6 +74,8 @@ fun Application.module() {
     }
 }
 
+@Suppress("unused")
+@KtorExperimentalLocationsAPI
 @Location("/available")
 class Available {
     @Location("/generator")
@@ -81,8 +85,10 @@ class Available {
     class Solver(val available: Available)
 }
 
+@KtorExperimentalLocationsAPI
 @Location("/generate/{generator}")
 class Generate(val generator: String, val width: Int, val height: Int)
 
+@KtorExperimentalLocationsAPI
 @Location("/solve/{solver}")
 class Solve(val solver: String, val maze: String)
