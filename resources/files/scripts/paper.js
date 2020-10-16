@@ -1,20 +1,20 @@
-var cellSize = 25
-var offsetX = 10;
-var offsetY = 10;
-var grid;
-var compressedMaze;
+const cellSize = 25
+const offsetX = 10;
+const offsetY = 10;
 
-function drawMaze() {
+// Uses PaperScope from the window object
+function drawMaze(grid, compressedMaze) {
     grid.uncompress(compressedMaze)
+    project.clear()
 
-    for (var i = 0; i < grid.height; i++) {
-        for (var j = 0; j < grid.width; j++) {
-            var cell = grid.cells[i][j];
+    for (let i = 0; i < grid.height; i++) {
+        for (let j = 0; j < grid.width; j++) {
+            const cell = grid.cells[i][j];
 
-            var x1 = (cell.x * cellSize) + offsetX
-            var y1 = (cell.y * cellSize) + offsetY
-            var x2 = ((cell.x + 1) * cellSize) + offsetX
-            var y2 = ((cell.y + 1) * cellSize) + offsetY
+            const x1 = (cell.x * cellSize) + offsetX
+            const y1 = (cell.y * cellSize) + offsetY
+            const x2 = ((cell.x + 1) * cellSize) + offsetX
+            const y2 = ((cell.y + 1) * cellSize) + offsetY
 
             if (!cell.north) {
                 new Path.Line({
@@ -58,25 +58,3 @@ function drawMaze() {
         }
     }
 }
-
-var xmlHttp = new XMLHttpRequest();
-
-xmlHttp.onreadystatechange = function () {
-    if (xmlHttp.readyState == XMLHttpRequest.DONE) {
-        if (xmlHttp.status == 200) {
-            var data = JSON.parse(xmlHttp.responseText)
-
-            grid = new Grid(data.height, data.width)
-            compressedMaze = data.maze
-
-            drawMaze();
-        }
-    }
-}
-
-var requestedWidth = 50
-var requestedHeight = 50
-var generator = "binary_tree"
-
-xmlHttp.open("GET", "/generate/" + generator + "?width=" + requestedWidth + "&height=" + requestedHeight, true)
-xmlHttp.send();
