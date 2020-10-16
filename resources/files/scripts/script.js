@@ -14,14 +14,6 @@ class Cell {
         if (bidirectional) cell.link(this, false)
     }
 
-    unlink(cell, bidirectional = true) {
-        const index = this.links.indexOf(cell)
-        if (index > -1) {
-            this.links.splice(index, 1)
-        }
-        if (bidirectional) cell.unlink(this, false)
-    }
-
     linked(cell) {
         return this.links.indexOf(cell) != -1
     }
@@ -52,19 +44,19 @@ class Grid {
             for (let j = 0; j < this.width; j++) {
                 const cell = this.cells[i][j];
 
-                if (typeof this.cells[i - 1] != 'undefined') {
+                if (this.cells[i - 1]) {
                     cell.north = this.cells[i - 1][j];
                 }
 
-                if (typeof this.cells[i + 1] != 'undefined') {
+                if (this.cells[i + 1]) {
                     cell.south = this.cells[i + 1][j];
                 }
 
-                if (typeof this.cells[i][j - 1] != 'undefined') {
+                if (this.cells[i][j - 1]) {
                     cell.west = this.cells[i][j - 1];
                 }
 
-                if (typeof this.cells[i][j + 1] != 'undefined') {
+                if (this.cells[i][j + 1]) {
                     cell.east = this.cells[i][j + 1];
                 }
             }
@@ -106,7 +98,7 @@ class Grid {
     }
 }
 
-const cellSize = 25
+const cellSize = 50
 let grid;
 let compressedMaze;
 
@@ -116,7 +108,7 @@ function setupCanvas(p5) {
 
     p5.createCanvas(canvasWidth, canvasHeight);
 
-    p5.strokeWeight(5);
+    p5.strokeWeight(10);
 }
 
 function drawMaze(p5) {
@@ -131,11 +123,11 @@ function drawMaze(p5) {
             const x2 = (cell.x + 1) * cellSize
             const y2 = (cell.y + 1) * cellSize
 
-            if (cell.north == null) {
+            if (!cell.north) {
                 p5.line(x1, y1, x2, y1)
             }
 
-            if (cell.west == null) {
+            if (!cell.west) {
                 p5.line(x1, y1, x1, y2)
             }
 
@@ -174,5 +166,5 @@ const requestedWidth = 50
 const requestedHeight = 50
 const generator = "binary_tree"
 
-xmlHttp.open("GET", `http://localhost:8080/generate/${generator}?width=${requestedWidth}&height=${requestedHeight}`, true)
+xmlHttp.open("GET", `/generate/${generator}?width=${requestedWidth}&height=${requestedHeight}`, true)
 xmlHttp.send();

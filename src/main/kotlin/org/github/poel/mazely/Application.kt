@@ -22,13 +22,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
     install(Locations)
 
-    install(CORS) {
-        method(HttpMethod.Get)
-        anyHost()
-    }
-
-    install(DataConversion)
-
     install(ContentNegotiation) {
         jackson {}
     }
