@@ -6,13 +6,14 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.features.*
-import com.fasterxml.jackson.databind.*
+import io.ktor.http.content.*
 import io.ktor.jackson.*
 import org.github.poel.mazely.entity.Grid
 import org.github.poel.mazely.generator.BinaryTree
 import org.github.poel.mazely.generator.Generators
 import org.github.poel.mazely.generator.Sidewinder
 import org.github.poel.mazely.solver.Solvers
+import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -31,6 +32,15 @@ fun Application.module() {
     }
 
     routing {
+        static {
+            resource("/", "index.html")
+            resource("*", "index.html")
+        }
+
+        static("/static") {
+            resources("files")
+        }
+
         get<Available.Generator> {
             call.respond(Generators.values())
         }
