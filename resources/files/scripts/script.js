@@ -1,70 +1,82 @@
-const cellSize = 50
-let grid;
-let compressedMaze;
+var cellSize = 25
+var offsetX = 10;
+var offsetY = 10;
+var grid;
+var compressedMaze;
 
-function setupCanvas(p5) {
-    const canvasWidth = cellSize * grid.width
-    const canvasHeight = cellSize * grid.height
-
-    p5.createCanvas(canvasWidth, canvasHeight);
-
-    p5.strokeWeight(10);
-}
-
-function drawMaze(p5) {
+function drawMaze() {
     grid.uncompress(compressedMaze)
 
-    for (let i = 0; i < grid.height; i++) {
-        for (let j = 0; j < grid.width; j++) {
-            const cell = grid.cells[i][j];
+    for (var i = 0; i < grid.height; i++) {
+        for (var j = 0; j < grid.width; j++) {
+            var cell = grid.cells[i][j];
 
-            const x1 = cell.x * cellSize
-            const y1 = cell.y * cellSize
-            const x2 = (cell.x + 1) * cellSize
-            const y2 = (cell.y + 1) * cellSize
+            var x1 = (cell.x * cellSize) + offsetX
+            var y1 = (cell.y * cellSize) + offsetY
+            var x2 = ((cell.x + 1) * cellSize) + offsetX
+            var y2 = ((cell.y + 1) * cellSize) + offsetY
 
             if (!cell.north) {
-                p5.line(x1, y1, x2, y1)
+                new Path.Line({
+                    from: [x1, y1],
+                    to: [x2, y1],
+                    strokeColor: 'black',
+                    strokeWidth: 10,
+                    strokeCap: 'round'
+                })
             }
 
             if (!cell.west) {
-                p5.line(x1, y1, x1, y2)
+                new Path.Line({
+                    from: [x1, y1],
+                    to: [x1, y2],
+                    strokeColor: 'black',
+                    strokeWidth: 10,
+                    strokeCap: 'round'
+                })
             }
 
             if (!cell.linked(cell.east)) {
-                p5.line(x2, y1, x2, y2)
+                new Path.Line({
+                    from: [x2, y1],
+                    to: [x2, y2],
+                    strokeColor: 'black',
+                    strokeWidth: 10,
+                    strokeCap: 'round'
+                })
             }
 
             if (!cell.linked(cell.south)) {
-                p5.line(x1, y2, x2, y2)
+                new Path.Line({
+                    from: [x1, y2],
+                    to: [x2, y2],
+                    strokeColor: 'black',
+                    strokeWidth: 10,
+                    strokeCap: 'round'
+                })
             }
-
-            
         }
     }
-    p5.noLoop()
 }
 
-const xmlHttp = new XMLHttpRequest();
+var xmlHttp = new XMLHttpRequest();
 
 xmlHttp.onreadystatechange = function () {
     if (xmlHttp.readyState == XMLHttpRequest.DONE) {
         if (xmlHttp.status == 200) {
-            let data = JSON.parse(xmlHttp.responseText)
+            var data = JSON.parse(xmlHttp.responseText)
 
             grid = new Grid(data.height, data.width)
             compressedMaze = data.maze
 
-            let p5_ = new p5();
-            setupCanvas(p5_);
-            drawMaze(p5_);
+            drawMaze();
         }
     }
 }
 
-const requestedWidth = 50
-const requestedHeight = 50
-const generator = "binary_tree"
+var requestedWidth = 50
+var requestedHeight = 50
+var generator = "binary_tree"
 
-xmlHttp.open("GET", `/generate/${generator}?width=${requestedWidth}&height=${requestedHeight}`, true)
+xmlHttp.open("GET", "/generate/" + generator + "?width=" + requestedWidth + "&height=" + requestedHeight, true)
 xmlHttp.send();
