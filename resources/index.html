@@ -1,61 +1,66 @@
 <!doctype html>
 
 <head>
-  <link rel="icon" href="/static/img/favicon.svg" sizes="any" type="image/svg+xml">
-  <meta charset="utf-8">
-  <!-- CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="/static/img/favicon.svg" sizes="any" type="image/svg+xml">
+    <meta charset="utf-8">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/static/css/style.css">
 
-  <!-- JS -->
-  <script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.11/paper-full.min.js"></script>
+    <!-- JS -->
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.11/paper-full.min.js"></script>
 
-  <!-- Local scripts -->
-  <script src="/static/scripts/Cell.js"></script>
-  <script src="/static/scripts/Grid.js"></script>
-  <script src="/static/scripts/paper.js"></script>
-  <script src="/static/scripts/network.js"></script>
-  <script>
-    function openSidebar() {
-        $('#sidebar').sidebar('toggle')
-    }
-  </script>
+    <!-- Local scripts -->
+    <script src="/static/scripts/Cell.js"></script>
+    <script src="/static/scripts/Grid.js"></script>
+    <script src="/static/scripts/paper.js"></script>
+    <script src="/static/scripts/network.js"></script>
+    <script>
+        function openSidebar() {
+            $('#sidebar').sidebar('toggle')
+        }
+    </script>
 
-  <title>Maze.ly</title>
+    <title>Maze.ly</title>
 </head>
 
 <body>
-  <h1 class="ui header">Maze.ly</h1>
-  <button onclick="openSidebar()">Request a new maze</button>
-  <canvas id="maze" resize></canvas>
-  <div id="sidebar" class="ui sidebar inverted vertical menu left push">
-      <form class='formGrid'>
-          <div class='field'>
-              <label for="width">Width</label>
-              <input type="number" min="1" max="50" name="width" id="width" placeholder="Width" value="25" step="1">
-          </div>
-          <div class='field'>
-              <label for="height">Height</label>
-              <input type="number" min="1" max="50" name="height" id="height" placeholder="Height" value="25" step="1">
-          </div>
-          <div class='field'>
-              <label for="generator">Generator</label>
-              <select name="generator" id="generator" disabled>
-                  <option>Select an option</option>
-              </select>
-          </div>
-          <button type="submit">Generate</button>
-      </form>
-  </div>
-  <script>
-      // Populate window object with PaperScope
-      paper.install(window)
-      paper.setup('maze')
-  </script>
-  <script src="/static/scripts/prepareSideBar.js"></script>
+    <div id="sidebar" class="ui sidebar inverted vertical left push">
+        <form class="ui form inverted formGrid">
+            <div class="field">
+                <label for="width">Width</label>
+                <input
+                    class="ui input" type="number" min="1" max="200" name="width" id="width" placeholder="Width" value="25" step="1">
+            </div>
+            <div class="field">
+                <label for="height">Height</label>
+                <input class="ui input" type="number" min="1" max="200" name="height" id="height" placeholder="Height" value="25" step="1">
+            </div>
+            <div class="field">
+                <label for="generator">Generator</label>
+                <select class="ui fluid dropdownn" name="generator" id="generator" required disabled>
+                    <option value="">Select an option</option>
+                </select>
+            </div>
+            <button type="submit" class="ui button">Generate</button>
+        </form>
+    </div>
+    <div class="pusher">
+        <div class="main">
+            <h1 class="ui header">Maze.ly</h1>
+            <button onclick="openSidebar()" class="ui button" id="requestMaze">Request a new maze</button>
+            <canvas id="maze" resize="true" keepalive="false" hidpi="true"></canvas>
+        </div>
+    </div>
+    <script>
+        // Populate window object with PaperScope
+        paper.install(window)
+        paper.setup('maze')
+    </script>
+    <script src="/static/scripts/prepareSideBar.js"></script>
 </body>
