@@ -3,12 +3,12 @@ package org.github.poel.mazely
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
 import org.github.poel.mazely.entity.Grid
+import org.github.poel.mazely.entity.LongestPath
 import org.github.poel.mazely.generator.BinaryTree
 import org.github.poel.mazely.generator.Generators
 import org.github.poel.mazely.generator.Sidewinder
@@ -52,11 +52,22 @@ fun Application.module() {
                 Generators.SIDEWINDER -> Sidewinder()
             }
 
+            val generatedGrid = generator.on(grid)
+            val (start, goal) = LongestPath.of(generatedGrid)
+
             call.respond(
                 mapOf(
                     "width" to it.width,
                     "height" to it.height,
-                    "maze" to generator.on(grid).compress()
+                    "maze" to generatedGrid.compress(),
+                    "start" to mapOf(
+                        "x" to start.coordinates.x,
+                        "y" to start.coordinates.y
+                    ),
+                    "goal" to mapOf(
+                        "x" to goal.coordinates.x,
+                        "y" to goal.coordinates.y
+                    )
                 )
             )
         }

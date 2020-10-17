@@ -34,15 +34,15 @@ data class Grid(
         }
     }
 
-    private fun get(x: Int, y: Int): Cell? {
-        return cells.getOrNull(x)?.getOrNull(y)
+    fun get(x: Int, y: Int): Cell {
+        return cells.get(x).get(y)
     }
 
-    private fun randomCell(): Cell {
+    fun randomCell(): Cell {
         return cells.random().random()
     }
 
-    private fun size(): Int {
+    fun size(): Int {
         return height * width
     }
 

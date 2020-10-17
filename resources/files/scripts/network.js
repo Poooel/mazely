@@ -13,7 +13,7 @@ function generateNewMaze(formData) {
                 const grid = new Grid(data.height, data.width)
                 const compressedMaze = data.maze
 
-                drawMaze(grid, compressedMaze);
+                drawMaze(grid, compressedMaze, data.start, data.goal);
             }
         }
     }
