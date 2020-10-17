@@ -46,30 +46,6 @@ data class Grid(
         return height * width
     }
 
-    override fun toString(): String {
-        var output = "+" + "---+".repeat(width) + "\n"
-
-        cells.forEach { row ->
-            var top = "|"
-            var bottom = "+"
-
-            row.forEach { cell ->
-                val body = "   "
-                val eastBoundary = if (cell.linked(cell.east)) " " else "|"
-                top += body + eastBoundary
-
-                val southBoundary = if (cell.linked(cell.south)) "   " else "---"
-                val corner = "+"
-                bottom += southBoundary + corner
-            }
-
-            output += top + "\n"
-            output += bottom + "\n"
-        }
-
-        return output
-    }
-
     @ExperimentalUnsignedTypes
     fun compress(): String {
         val binaryRepresentation = cells.map { row ->
