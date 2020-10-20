@@ -8,6 +8,7 @@ val logback_version: String by project
 plugins {
     kotlin("jvm") version "1.4.10"
     application
+    id("com.github.johnrengelman.shadow") version "5.0.0"
 }
 
 group = "org.github.poel"
@@ -40,3 +41,13 @@ application {
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
 
 sourceSets["main"].resources.srcDirs("resources")
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            mapOf(
+                "Main-Class" to application.mainClassName
+            )
+        )
+    }
+}

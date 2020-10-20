@@ -1,0 +1,5 @@
+{
+  "name": "mazely",
+  "description": "Generate and solve mazes.",
+  "image": "heroku/java"
+}
