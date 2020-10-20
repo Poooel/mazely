@@ -43,18 +43,17 @@
             </div>
             <div class="field">
                 <label for="generator">Generator</label>
-                <select class="ui fluid dropdownn" name="generator" id="generator" required disabled>
-                    <option value="">Select an option</option>
-                </select>
+                <select class="ui fluid dropdown" name="generator" id="generator" required disabled></select>
             </div>
             <button type="submit" class="ui button">Generate</button>
         </form>
     </div>
     <div class="pusher">
         <div class="main">
-            <h1 class="ui header">Maze.ly</h1>
-            <button onclick="openSidebar()" class="ui button" id="requestMaze">Request a new maze</button>
-            <canvas id="maze" resize="true" keepalive="false" hidpi="true"></canvas>
+            <button class="circular ui icon basic button" onclick="openSidebar()" id="requestMaze">
+                <i class="icon settings"></i>
+            </button>
+            <canvas id="maze" resize></canvas>
         </div>
     </div>
     <script>

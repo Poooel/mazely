@@ -13,4 +13,12 @@ getGenerators().then(generators => {
         field.append(option)
     })
     field.attr('disabled', false)
+
+    $('form').submit()
 })
+
+const numberOfCellsWidth = Math.floor($(window).width() / cellSize);
+const numberOfCellsHeight = Math.floor($(window).height() / cellSize);
+
+$('#width').val(numberOfCellsWidth);
+$('#height').val(numberOfCellsHeight);

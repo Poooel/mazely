@@ -14,6 +14,11 @@ canvas[resize] {
     padding: 1rem;
 }
 
+#requestMaze {
+    margin: 0.5rem;
+    position: absolute;
+}
+
 .formGrid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

@@ -1,6 +1,9 @@
-const cellSize = 25
-const offsetX = 10;
-const offsetY = 10;
+const cellSize = 25;
+const offsetX = 7;
+const offsetY = 7;
+const strokeColor = "black";
+const strokeWidth = 10;
+const strokeCap = "round";
 
 function drawCell(cell, color) {
     const x1 = (cell.x * cellSize) + offsetX
@@ -36,9 +39,9 @@ function drawMaze(grid, compressedMaze, start, goal) {
                 new Path.Line({
                     from: [x1, y1],
                     to: [x2, y1],
-                    strokeColor: 'black',
-                    strokeWidth: 10,
-                    strokeCap: 'round'
+                    strokeColor: strokeColor,
+                    strokeWidth: strokeWidth,
+                    strokeCap: strokeCap
                 })
             }
 
@@ -46,9 +49,9 @@ function drawMaze(grid, compressedMaze, start, goal) {
                 new Path.Line({
                     from: [x1, y1],
                     to: [x1, y2],
-                    strokeColor: 'black',
-                    strokeWidth: 10,
-                    strokeCap: 'round'
+                    strokeColor: strokeColor,
+                    strokeWidth: strokeWidth,
+                    strokeCap: strokeCap
                 })
             }
 
@@ -56,9 +59,9 @@ function drawMaze(grid, compressedMaze, start, goal) {
                 new Path.Line({
                     from: [x2, y1],
                     to: [x2, y2],
-                    strokeColor: 'black',
-                    strokeWidth: 10,
-                    strokeCap: 'round'
+                    strokeColor: strokeColor,
+                    strokeWidth: strokeWidth,
+                    strokeCap: strokeCap
                 })
             }
 
@@ -66,9 +69,9 @@ function drawMaze(grid, compressedMaze, start, goal) {
                 new Path.Line({
                     from: [x1, y2],
                     to: [x2, y2],
-                    strokeColor: 'black',
-                    strokeWidth: 10,
-                    strokeCap: 'round'
+                    strokeColor: strokeColor,
+                    strokeWidth: strokeWidth,
+                    strokeCap: strokeCap
                 })
             }
         }
