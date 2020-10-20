@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktor_version: String by project
@@ -8,7 +7,7 @@ val logback_version: String by project
 plugins {
     kotlin("jvm") version "1.4.10"
     application
-    id("com.github.johnrengelman.shadow") version "5.0.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 group = "org.github.poel"
@@ -30,7 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-jackson:$ktor_version")
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "12"
 }
 
@@ -50,4 +49,8 @@ tasks.withType<Jar> {
             )
         )
     }
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveVersion.set("")
 }
