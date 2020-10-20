@@ -17,8 +17,8 @@ getGenerators().then(generators => {
     $('form').submit()
 })
 
-const numberOfCellsWidth = Math.floor($(window).width() / cellSize);
-const numberOfCellsHeight = Math.floor($(window).height() / cellSize);
+const numberOfCellsWidth = Math.floor(($(window).width() - offsetX) / cellSize);
+const numberOfCellsHeight = Math.floor(($(window).height() - offsetY) / cellSize);
 
 $('#width').val(numberOfCellsWidth);
 $('#height').val(numberOfCellsHeight);
