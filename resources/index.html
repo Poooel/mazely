@@ -4,15 +4,10 @@
     <link rel="icon" href="/static/img/favicon.svg" sizes="any" type="image/svg+xml">
     <meta charset="utf-8">
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
 
     <!-- JS -->
-    <script
-    src="https://code.jquery.com/jquery-3.1.1.min.js"
-    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-    crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.11/paper-full.min.js"></script>
 
     <!-- Local scripts -->
@@ -20,46 +15,46 @@
     <script src="/static/scripts/Grid.js"></script>
     <script src="/static/scripts/paper.js"></script>
     <script src="/static/scripts/network.js"></script>
-    <script>
-        function openSidebar() {
-            $('#sidebar').sidebar('toggle')
-        }
-    </script>
 
     <title>Maze.ly</title>
 </head>
 
 <body>
-    <div id="sidebar" class="ui sidebar inverted vertical left push">
-        <form class="ui form inverted formGrid">
-            <div class="field">
-                <label for="width">Width</label>
-                <input
-                    class="ui input" type="number" min="1" max="200" name="width" id="width" placeholder="Width" value="25" step="1">
+    <button id="openOptions" class="fixed top-0 left-0 h-8 w-8 m-4 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-100 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+    </button>
+    <canvas id="maze" resize></canvas>
+    <div id="modalBackground" class="absolute inset-0 h-full w-full bg-white bg-opacity-75 invisible opacity-0 transition-opacity duration-300 ease-in-out"></div>
+    <div id="modal" class="fixed top-0 left-0 m-4 p-8 bg-gray-200 border border-solid border-gray-300 shadow-xl rounded invisible opacity-0 transition-opacity duration-300 ease-in-out">
+        <form class="grid grid-cols-1 gap-8">
+            <h1 class="text-3xl">Mazely</h1>
+            <div class="flex flex-col space-y-2">
+                <label for="width" class="text-lg font-semibold">Maze width</label>
+                <input id="width" name="width" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" type="number" min="1" max="200" step="1" value="25" placeholder="The number of cells in width">
             </div>
-            <div class="field">
-                <label for="height">Height</label>
-                <input class="ui input" type="number" min="1" max="200" name="height" id="height" placeholder="Height" value="25" step="1">
+            <div class="flex flex-col space-y-2">
+                <label for="height" class="text-lg font-semibold">Maze height</label>
+                <input id="height" name="height" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" type="number" min="1" max="200" step="1" value="25" placeholder="The number of cells in height">
             </div>
-            <div class="field">
-                <label for="generator">Generator</label>
-                <select class="ui fluid dropdown" name="generator" id="generator" required disabled></select>
+            <div class="flex flex-col space-y-2">
+                <label for="generator" class="text-lg font-semibold">Algorithm to generate the maze</label>
+                <select id="generator" name="generator" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" required disabled></select>
             </div>
-            <button type="submit" class="ui button">Generate</button>
+            <button class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-2" type="submit">Generate</button>
         </form>
-    </div>
-    <div class="pusher">
-        <div class="main">
-            <button class="circular ui icon basic button" onclick="openSidebar()" id="requestMaze">
-                <i class="icon settings"></i>
-            </button>
-            <canvas id="maze" resize></canvas>
-        </div>
+        <button id="closeOptions" class="absolute top-0 right-0 m-4 h-8 w-8 rounded-full hover:bg-gray-300 transition duration-100 ease-in-out">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
     </div>
     <script>
         // Populate window object with PaperScope
         paper.install(window)
         paper.setup('maze')
     </script>
-    <script src="/static/scripts/prepareSideBar.js"></script>
+    <script src="/static/scripts/prepareOptions.js"></script>
 </body>

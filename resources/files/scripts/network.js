@@ -1,7 +1,7 @@
 function generateNewMaze(formData) {
-    const generator = formData.get('generator')
     const width = formData.get('width')
     const height = formData.get('height')
+    const generator = formData.get('generator')
     
     const xmlHttp = new XMLHttpRequest();
 
@@ -18,7 +18,7 @@ function generateNewMaze(formData) {
         }
     }
 
-    xmlHttp.open("GET", "/generate/" + generator + "?width=" + width + "&height=" + height, true)
+    xmlHttp.open("GET", `/generate/${generator}?width=${width}&height=${height}`, true)
     xmlHttp.send();
 }
 
