@@ -53,4 +53,8 @@ data class Distances(
 
         return Pair(maxDistanceCell, maxDistance)
     }
+
+    fun compress(): List<List<Int>> {
+        return cells.map { listOf(it.key.coordinates.x, it.key.coordinates.y, it.value) }
+    }
 }

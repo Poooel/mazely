@@ -20,17 +20,16 @@
 </head>
 
 <body>
-    <button id="openOptions" class="fixed top-0 left-0 h-8 w-8 m-4 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-100 ease-in-out">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <button id="openOptions" class="fixed top-0 left-0 h-8 w-8 m-4 transition duration-100 ease-in-out">
+        <svg id="gear" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgb(192,192,192)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+        </svg>
     </button>
     <canvas id="maze" resize></canvas>
     <div id="modalBackground" class="absolute inset-0 h-full w-full bg-white bg-opacity-75 invisible opacity-0 transition-opacity duration-300 ease-in-out"></div>
     <div id="modal" class="fixed top-0 left-0 m-4 p-8 bg-gray-200 border border-solid border-gray-300 shadow-xl rounded invisible opacity-0 transition-opacity duration-300 ease-in-out">
         <form class="grid grid-cols-1 gap-8">
-            <h1 class="text-3xl">Mazely</h1>
             <div class="flex flex-col space-y-2">
                 <label for="width" class="text-lg font-semibold">Maze width</label>
                 <input id="width" name="width" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" type="number" min="1" max="200" step="1" value="25" placeholder="The number of cells in width">
@@ -42,6 +41,10 @@
             <div class="flex flex-col space-y-2">
                 <label for="generator" class="text-lg font-semibold">Algorithm to generate the maze</label>
                 <select id="generator" name="generator" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" required disabled></select>
+            </div>
+            <div>
+                <input id="xray" name="xray" class="form-checkbox" type="checkbox">
+                <span class="text-lg font-semibold">X-Ray</span>
             </div>
             <button class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-2" type="submit">Generate</button>
         </form>

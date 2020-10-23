@@ -1,3 +1,8 @@
+var grid
+var start
+var goal
+var xray
+
 function generateNewMaze(formData) {
     const width = formData.get('width')
     const height = formData.get('height')
@@ -10,10 +15,13 @@ function generateNewMaze(formData) {
             if (xmlHttp.status == 200) {
                 const data = JSON.parse(xmlHttp.responseText)
 
-                const grid = new Grid(data.height, data.width)
-                const compressedMaze = data.maze
+                grid = new Grid(data.height, data.width)
+                grid.uncompress(data.maze)
+                start = data.start
+                goal = data.goal
+                xray = data.xray
 
-                drawMaze(grid, compressedMaze, data.start, data.goal);
+                drawMaze(grid, start, goal, xray);
             }
         }
     }

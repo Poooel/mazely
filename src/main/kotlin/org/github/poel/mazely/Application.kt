@@ -7,11 +7,8 @@ import io.ktor.locations.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
-import org.github.poel.mazely.entity.Grid
-import org.github.poel.mazely.entity.LongestPath
-import org.github.poel.mazely.generator.BinaryTree
+import org.github.poel.mazely.generator.GeneratorService
 import org.github.poel.mazely.generator.Generators
-import org.github.poel.mazely.generator.Sidewinder
 import org.github.poel.mazely.solver.Solvers
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -24,6 +21,10 @@ fun Application.module() {
 
     install(ContentNegotiation) {
         jackson {}
+    }
+
+    install(Compression) {
+        gzip()
     }
 
     routing {
@@ -45,31 +46,7 @@ fun Application.module() {
         }
 
         get<Generate> {
-            val grid = Grid(it.height, it.width)
-
-            val generator = when(Generators.valueOf(it.generator.toUpperCase())) {
-                Generators.BINARY_TREE -> BinaryTree()
-                Generators.SIDEWINDER -> Sidewinder()
-            }
-
-            val generatedGrid = generator.on(grid)
-            val (start, goal) = LongestPath.of(generatedGrid)
-
-            call.respond(
-                mapOf(
-                    "width" to it.width,
-                    "height" to it.height,
-                    "maze" to generatedGrid.compress(),
-                    "start" to mapOf(
-                        "x" to start.coordinates.x,
-                        "y" to start.coordinates.y
-                    ),
-                    "goal" to mapOf(
-                        "x" to goal.coordinates.x,
-                        "y" to goal.coordinates.y
-                    )
-                )
-            )
+            call.respond(GeneratorService.generateMaze(it.generator, it.width, it.height))
         }
 
         get<Solve> {

@@ -35,7 +35,7 @@ data class Grid(
     }
 
     fun get(x: Int, y: Int): Cell {
-        return cells.get(x).get(y)
+        return cells.get(y).get(x)
     }
 
     fun randomCell(): Cell {

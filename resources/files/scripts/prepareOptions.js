@@ -16,6 +16,10 @@ form.addEventListener('submit', e => {
     generateNewMaze(formData)
 })
 
+document.querySelector("#xray").addEventListener('change', function() {
+    firstLayer.visible = this.checked
+});
+
 function getModalComponents() {
     const modalBackground = document.querySelector('#modalBackground')
     const modal = document.querySelector('#modal')
@@ -36,7 +40,7 @@ function changeModalProperty(shouldBeVisible, properties) {
     modal.classList.replace(...property)
 }
 
-function changeModalVisiblity(shouldBeVisible) {
+function changeModalVisibility(shouldBeVisible) {
     changeModalProperty(shouldBeVisible, ['invisible', 'visible'])
 }
 
@@ -45,7 +49,7 @@ function changeModalOpacity(shouldBeVisible) {
 }
 
 function openModal() {
-    changeModalVisiblity(true)
+    changeModalVisibility(true)
     changeModalOpacity(true)
 }
 
@@ -81,9 +85,12 @@ getGenerators().then(generators => {
     const field = document.querySelector('#generator')
 
     generators.forEach(generator => {
+        let generatorToDisplay = generator.replace('_', ' ')
+        generatorToDisplay = generatorToDisplay.replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase();});
+
         const option = document.createElement('option')
         option.setAttribute('value', generator)
-        option.textContent = generator
+        option.textContent = generatorToDisplay
         field.append(option)
     })
 
