@@ -121,7 +121,15 @@ function drawMaze(grid, start, goal, xray) {
 
             if (!cell.linked(cell.east)) {
                 if (x != grid.width - 1) {
-                    if (y == grid.height - 1) {
+                    if (y == 0) {
+                        new Path.Line({
+                            from: [x2, 0],
+                            to: [x2, y2],
+                            strokeColor: strokeColor,
+                            strokeWidth: strokeWidth,
+                            strokeCap: strokeCap
+                        })
+                    } else if (y == grid.height - 1) {
                         new Path.Line({
                             from: [x2, y1],
                             to: [x2, window.innerHeight],

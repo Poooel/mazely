@@ -2,5 +2,15 @@ package org.github.poel.mazely.generator
 
 enum class Generators {
     BINARY_TREE,
-    SIDEWINDER
+    SIDEWINDER,
+    ALDOUS_BRODER,
+    //WILSONS,
+    HUNT_AND_KILL,
+    RECURSIVE_BACKTRACKER,
+    SIMPLIFIED_PRIMS,
+    TRUE_PRIMS,
+    GROWING_TREE_LAST,
+    GROWING_TREE_RANDOM,
+    GROWING_TREE_MIXED,
+    KRUSKALS
 }

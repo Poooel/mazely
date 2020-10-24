@@ -1,7 +1,8 @@
-package org.github.poel.mazely.generator
+package org.github.poel.mazely.generator.algorithm
 
 import org.github.poel.mazely.entity.Cell
 import org.github.poel.mazely.entity.Grid
+import org.github.poel.mazely.generator.Generator
 
 class BinaryTree: Generator {
     override fun on(grid: Grid): Grid {

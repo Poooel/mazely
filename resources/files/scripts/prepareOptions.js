@@ -98,7 +98,7 @@ getGenerators().then(generators => {
     const field = document.querySelector('#generator')
 
     generators.forEach(generator => {
-        let generatorToDisplay = generator.replace('_', ' ')
+        let generatorToDisplay = generator.replaceAll('_', ' ')
         generatorToDisplay = generatorToDisplay.replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase();});
 
         const option = document.createElement('option')
