@@ -1,10 +1,10 @@
 // Compute default maze size
 
-const numberOfCellsWidth = Math.floor((window.innerWidth - offsetX) / cellSize)
-const numberOfCellsHeight = Math.floor((window.innerHeight - offsetY) / cellSize)
+var numberOfCellsWidth = Math.floor((window.innerWidth) / cellSize)
+var numberOfCellsHeight = Math.floor((window.innerHeight) / cellSize)
 
-document.querySelector('#width').value = numberOfCellsWidth
-document.querySelector('#height').value = numberOfCellsHeight
+var fillWidth = window.innerWidth - (numberOfCellsWidth * cellSize)
+var fillHeight = window.innerHeight - (numberOfCellsHeight * cellSize)
 
 const form = document.querySelector('form');
 
@@ -19,6 +19,19 @@ form.addEventListener('submit', e => {
 document.querySelector("#xray").addEventListener('change', function() {
     firstLayer.visible = this.checked
 });
+
+window.addEventListener('resize', e => {
+    clearTimeout(window.resizedFinished);
+    window.resizedFinished = setTimeout(function(){
+        numberOfCellsWidth = Math.floor((window.innerWidth) / cellSize)
+        numberOfCellsHeight = Math.floor((window.innerHeight) / cellSize)
+
+        fillWidth = window.innerWidth - (numberOfCellsWidth * cellSize)
+        fillHeight = window.innerHeight - (numberOfCellsHeight * cellSize)
+
+        form.requestSubmit()
+    }, 250);
+})
 
 function getModalComponents() {
     const modalBackground = document.querySelector('#modalBackground')

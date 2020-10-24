@@ -4,8 +4,8 @@ var goal
 var xray
 
 function generateNewMaze(formData) {
-    const width = formData.get('width')
-    const height = formData.get('height')
+    const width = numberOfCellsWidth
+    const height = numberOfCellsHeight
     const generator = formData.get('generator')
     
     const xmlHttp = new XMLHttpRequest();
