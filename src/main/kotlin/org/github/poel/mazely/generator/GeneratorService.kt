@@ -31,7 +31,6 @@ object GeneratorService {
             Generators.BINARY_TREE -> BinaryTree()
             Generators.SIDEWINDER -> Sidewinder()
             Generators.ALDOUS_BRODER -> AldousBroder()
-            //Generators.WILSONS -> Wilsons()
             Generators.HUNT_AND_KILL -> HuntAndKill()
             Generators.RECURSIVE_BACKTRACKER -> RecursiveBacktracker()
             Generators.SIMPLIFIED_PRIMS -> SimplifiedPrims()
@@ -40,6 +39,7 @@ object GeneratorService {
             Generators.GROWING_TREE_RANDOM -> GrowingTreeRandom()
             Generators.GROWING_TREE_MIXED -> GrowingTreeMixed()
             Generators.KRUSKALS -> Kruskals()
+            Generators.RECURSIVE_DIVISION -> RecursiveDivision()
         }
     }
 }
