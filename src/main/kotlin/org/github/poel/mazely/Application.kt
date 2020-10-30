@@ -7,8 +7,10 @@ import io.ktor.locations.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
+import io.ktor.request.*
 import org.github.poel.mazely.generator.GeneratorService
 import org.github.poel.mazely.generator.Generators
+import org.github.poel.mazely.solver.SolverService
 import org.github.poel.mazely.solver.Solvers
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -45,12 +47,12 @@ fun Application.module() {
             call.respond(Solvers.values())
         }
 
-        get<Generate> {
-            call.respond(GeneratorService.generateMaze(it.generator, it.width, it.height))
+        post<Generate> {
+            call.respond(GeneratorService.generateMaze(call.receive()))
         }
 
-        get<Solve> {
-
+        post<Solve> {
+            call.respond(SolverService.solveMaze(call.receive()))
         }
     }
 }
@@ -67,9 +69,9 @@ class Available {
 }
 
 @KtorExperimentalLocationsAPI
-@Location("/generate/{generator}")
-class Generate(val generator: String, val width: Int, val height: Int)
+@Location("/generate")
+class Generate
 
 @KtorExperimentalLocationsAPI
-@Location("/solve/{solver}")
-class Solve(val solver: String, val maze: String)
+@Location("/solve")
+class Solve

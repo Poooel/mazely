@@ -29,17 +29,98 @@
     <canvas id="maze" resize></canvas>
     <div id="modalBackground" class="absolute inset-0 h-full w-full bg-white bg-opacity-75 invisible opacity-0 transition-opacity duration-300 ease-in-out"></div>
     <div id="modal" class="fixed top-0 left-0 m-4 p-8 bg-gray-200 border border-solid border-gray-300 shadow-xl rounded invisible opacity-0 transition-opacity duration-300 ease-in-out">
-        <form class="grid grid-cols-1 gap-8">
-            <div class="flex flex-col space-y-2">
-                <label for="generator" class="text-lg font-semibold">Algorithm to generate the maze</label>
-                <select id="generator" name="generator" class="font-mono border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline" required disabled></select>
+        <div id="settings" class="grid grid-cols-1 gap-4">
+            <span>Settings</span>
+            <div>
+                <label for="generator">Algorithm to generate the maze</label>
+                <select id="generator"></select>
             </div>
             <div>
-                <input id="xray" name="xray" class="form-checkbox" type="checkbox">
-                <span class="text-lg font-semibold">X-Ray</span>
+                <label for="solver">Algorithm to solve the maze</label>
+                <select id="solver"></select>
             </div>
-            <button class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-2" type="submit">Generate</button>
-        </form>
+            <div id="advancedSettings">
+                <span>‣ Advanced settings</span>
+                <div id="walls">
+                    <span>‣ Walls</span>
+                    <div>
+                        <input id="enableWalls" type="checkbox">
+                        <span>Enable walls</span>
+                    </div>
+                    <div>
+                        <label for="wallThickness">Wall thickness</label>
+                        <input id="wallThickness" type="number">
+                    </div>
+                    <div>
+                        <label for="wallColor">Wall color</label>
+                        <input id="wallColor" type="color">
+                    </div>
+                </div>
+                <div id="cells">
+                    <span>‣ Cells</span>
+                    <div>
+                        <label for="cellBackgroundColor">Cell background color</label>
+                        <input id="cellBackgroundColor" type="color">
+                    </div>
+                    <div>
+                        <label for="cellSize">Cell size</label>
+                        <input id="cellSize" type="number">
+                    </div>
+                    <div id="xray">
+                        <span>‣ X-Ray</span>
+                        <div>
+                            <input id="enableXray" type="checkbox">
+                            <span>Enable X-Ray</span>
+                        </div>
+                        <div>
+                            <label for="xrayColor">X-Ray color</label>
+                            <select id="xrayColor"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="startAndGoal">
+                    <span>‣ Start & Goal</span>
+                    <div>
+                        <label for="placeStartAndGoal">How to place start & goal?</label>
+                        <select id="placeStartAndGoal"></select>
+                    </div>
+                    <div>
+                        <span>‣ Start</span>
+                        <div>
+                            <label for="startColor">Start color</label>
+                            <input id="startColor" type="color">
+                        </div>
+                        <div>
+                            <label for="startShape">Start shape</label>
+                            <select id="startShape"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <span>‣ Goal</span>
+                        <div>
+                            <label for="goalColor">Goal color</label>
+                            <input id="goalColor" type="color">
+                        </div>
+                        <div>
+                            <label for="goalShape">Goal shape</label>
+                            <select id="goalShape"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <span>‣ Path</span>
+                        <div>
+                            <input id="showPath" type="checkbox">
+                            <span>Show path</span>
+                        </div>
+                        <div>
+                            <label for="pathColor">Path color</label>
+                            <input id="pathColor" type="color">
+                        </div>
+                    </div>
+                </div>
+                <button id="generateAndSolve">Generate & Solve</button>
+            </div>
+        </div>
         <button id="closeOptions" class="absolute top-0 right-0 m-4 h-8 w-8 rounded-full hover:bg-gray-300 transition duration-100 ease-in-out">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

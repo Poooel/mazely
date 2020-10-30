@@ -9,6 +9,7 @@ let offsetY = 0;
 
 var firstLayer;
 var secondLayer;
+var thirdLayer;
 
 function findMaxDistance(xray) {
     let max = 0;
@@ -98,6 +99,7 @@ function drawMaze(grid, start, goal, xray) {
 
     firstLayer = new Layer();
     secondLayer = new Layer();
+    thirdLayer = new Layer();
 
     drawXray(xray, grid)
 
@@ -106,9 +108,6 @@ function drawMaze(grid, start, goal, xray) {
     }
 
     secondLayer.activate()
-
-    drawCircle(start, 'red', grid)
-    drawCircle(goal, 'green', grid)
 
     for (let y = 0; y < grid.height; y++) {
         for (let x = 0; x < grid.width; x++) {
@@ -180,4 +179,38 @@ function drawMaze(grid, start, goal, xray) {
             }
         }
     }
+}
+
+function drawPath(path) {
+    thirdLayer.activate()
+
+    for (let i = 0; i < path.length; i++) {
+        const cell = path[i]
+        // const nextCell = path[i + 1]
+
+        const boundingRectangle = getBoundingRectangle(cell, grid)
+        // const nextBoundingRectangle = getBoundingRectangle(nextCell, grid)
+
+        const x3 = (boundingRectangle[0][0] + boundingRectangle[1][0]) / 2
+        const y3 = (boundingRectangle[0][1] + boundingRectangle[1][1]) / 2
+
+        // const x4 = (nextBoundingRectangle[0][0] + nextBoundingRectangle[1][0]) / 2
+        // const y4 = (nextBoundingRectangle[0][1] + nextBoundingRectangle[1][1]) / 2
+
+        const movingCell = new Path.Circle({
+            center: [x3, y3],
+            radius: cellSize / 4,
+            fillColor: 'magenta'
+        })
+
+        // movingCell.tween({
+        //     center: [x4, y4],
+        // }, {
+        //     easing: 'easeInOutCubic',
+        //     duration: 2000
+        // })
+    }
+
+    drawCircle(start, 'red', grid)
+    drawCircle(goal, 'green', grid)
 }

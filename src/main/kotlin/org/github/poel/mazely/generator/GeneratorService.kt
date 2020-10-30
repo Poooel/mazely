@@ -5,10 +5,10 @@ import org.github.poel.mazely.entity.LongestPath
 import org.github.poel.mazely.generator.algorithm.*
 
 object GeneratorService {
-    fun generateMaze(generatorToUse: String, width: Int, height: Int): GeneratedMazeResponse {
-        val grid = Grid(height, width)
+    fun generateMaze(generateMazeRequest: GenerateMazeRequest): GeneratedMazeResponse {
+        val grid = Grid(generateMazeRequest.height, generateMazeRequest.width)
 
-        val generator = findGenerator(generatorToUse)
+        val generator = findGenerator(generateMazeRequest.generatorToUse)
 
         val generatedGrid = generator.on(grid)
 
@@ -17,8 +17,8 @@ object GeneratorService {
         val xrayDistances = start.distances()
 
         return GeneratedMazeResponse(
-            width = width,
-            height = height,
+            width = grid.width,
+            height = grid.height,
             maze = generatedGrid.compress(),
             start = start.coordinates,
             goal = goal.coordinates,

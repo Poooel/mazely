@@ -6,14 +6,13 @@ var numberOfCellsHeight = Math.floor((window.innerHeight) / cellSize)
 var fillWidth = window.innerWidth - (numberOfCellsWidth * cellSize)
 var fillHeight = window.innerHeight - (numberOfCellsHeight * cellSize)
 
-const form = document.querySelector('form');
+const generateAndSolveButton = document.querySelector("#generateAndSolve")
 
 // Listeners
 
-form.addEventListener('submit', e => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    generateNewMaze(formData)
+generateAndSolveButton.addEventListener('click', e => {
+    const selectedAlgorithm = document.querySelector("#generator");
+    generateNewMaze(selectedAlgorithm.value)
 })
 
 document.querySelector("#xray").addEventListener('change', function() {
@@ -29,7 +28,7 @@ window.addEventListener('resize', e => {
         fillWidth = window.innerWidth - (numberOfCellsWidth * cellSize)
         fillHeight = window.innerHeight - (numberOfCellsHeight * cellSize)
 
-        form.requestSubmit()
+        generateAndSolveButton.click()
     }, 250);
 })
 
@@ -94,23 +93,67 @@ document.querySelector('#modalBackground').addEventListener('click', () =>
 
 // Fetch generators and add options to dropdown
 
+function prettyPrintAlgorithm(name) {
+    let prettyPrintedName = name.replaceAll('_', ' ')
+    prettyPrintedName = prettyPrintedName.replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase();});
+
+    if (prettyPrintedName.endsWith('s')) {
+        prettyPrintedName = prettyPrintedName.replace(/.$/, "'s")
+    }
+
+    return prettyPrintedName
+}
+
+function populateSelect(field, value) {
+    const option = document.createElement('option')
+    option.setAttribute('value', value)
+    option.textContent = prettyPrintAlgorithm(value)
+    field.append(option)
+}
+
 getGenerators().then(generators => {
     const field = document.querySelector('#generator')
 
     generators.forEach(generator => {
-        let generatorToDisplay = generator.replaceAll('_', ' ')
-        generatorToDisplay = generatorToDisplay.replace(/\w+/g, function(w){return w[0].toUpperCase() + w.slice(1).toLowerCase();});
-
-        if (generatorToDisplay.endsWith('s')) {
-            generatorToDisplay = generatorToDisplay.replace(/.$/, "'s")
-        }
-
-        const option = document.createElement('option')
-        option.setAttribute('value', generator)
-        option.textContent = generatorToDisplay
-        field.append(option)
+        populateSelect(field, generator)
     })
 
     field.removeAttribute('disabled')
-    form.requestSubmit()
+    generateAndSolveButton.click()
 })
+
+getSolvers().then(solvers => {
+    const field = document.querySelector('#solver')
+
+    solvers.forEach(solver => {
+        populateSelect(field, solver)
+    })
+
+    field.removeAttribute('disabled')
+})
+
+// - Algorithm to generate maze
+// - Algorithm to solve maze
+// -> Advanced Settings
+//     -> Walls
+//         - Enable walls
+//         - Wall thickness
+//         - Wall color
+//     -> Cells
+//         - Cell background color
+//         - Cell size
+//         -> X-Ray
+//             - Enable X-Ray
+//             - Color of X-Ray
+//     -> Start & Goal
+//         - How to place start & goal (manual, random, farthest)
+//         -> Start
+//             - Start color
+//             - Start shape
+//         -> Goal
+//             - Goal color
+//             - Goal shape
+//         -> Path to goal
+//             - Show path
+//             - Color of path
+// - Button to generate & solve maze

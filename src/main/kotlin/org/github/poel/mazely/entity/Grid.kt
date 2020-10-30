@@ -5,6 +5,9 @@ data class Grid(
     val width: Int,
     var cells: List<List<Cell>> = emptyList()
 ) {
+    lateinit var start: Cell
+    lateinit var goal: Cell
+
     private val chunkSize = 64
 
     init {
@@ -44,6 +47,19 @@ data class Grid(
 
     fun size(): Int {
         return height * width
+    }
+
+    fun setStartAndGoal(start: Coordinates, goal: Coordinates) {
+        setStart(start)
+        setGoal(goal)
+    }
+
+    private fun setStart(coordinates: Coordinates) {
+        start = get(coordinates.x, coordinates.y)
+    }
+
+    private fun setGoal(coordinates: Coordinates) {
+        goal = get(coordinates.x, coordinates.y)
     }
 
     @ExperimentalUnsignedTypes
