@@ -54,6 +54,10 @@ fun Application.module() {
         post<Solve> {
             call.respond(SolverService.solveMaze(call.receive()))
         }
+
+        post<GenerateAndSolve> {
+            call.respond(GenerateAndSolveService.generateAndSolve(call.receive()))
+        }
     }
 }
 
@@ -75,3 +79,7 @@ class Generate
 @KtorExperimentalLocationsAPI
 @Location("/solve")
 class Solve
+
+@KtorExperimentalLocationsAPI
+@Location("/generate/solve")
+class GenerateAndSolve

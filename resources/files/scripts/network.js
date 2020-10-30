@@ -65,6 +65,3 @@ function solveMaze(selectedAlgorithm) {
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify(body));
 }
-
-const getGenerators = () => fetch('/available/generator').then(resp => resp.json())
-const getSolvers = () => fetch('/available/solver').then(resp => resp.json())
