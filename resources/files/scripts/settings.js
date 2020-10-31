@@ -12,11 +12,12 @@ function getSettings() {
     settings.xrayColor = document.querySelector("#xrayColor").value
 
     settings.placeStartAndGoal = document.querySelector("#placeStartAndGoal").value
+
     settings.startColor = document.querySelector("#startColor").value
-    settings.startShape = document.querySelector("#startShape").value
+    settings.showStart = document.querySelector("#showStart").checked
 
     settings.goalColor = document.querySelector("#goalColor").value
-    settings.goalShape = document.querySelector("#goalShape").value
+    settings.showGoal = document.querySelector("#showGoal").checked
 
     settings.showPath = document.querySelector("#showPath").checked
     settings.pathColor = document.querySelector("#pathColor").value

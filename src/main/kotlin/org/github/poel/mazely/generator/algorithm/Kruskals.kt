@@ -3,12 +3,13 @@ package org.github.poel.mazely.generator.algorithm
 import org.github.poel.mazely.entity.Cell
 import org.github.poel.mazely.entity.Grid
 import org.github.poel.mazely.generator.Generator
+import kotlin.random.Random
 
 class Kruskals: Generator {
-    override fun on(grid: Grid): Grid {
+    override fun on(grid: Grid, random: Random): Grid {
         val state = State(grid)
 
-        state.neighbors.shuffle()
+        state.neighbors.shuffle(random)
 
         while (state.neighbors.any()) {
             val (left, right) = state.neighbors.removeLast()
@@ -21,7 +22,7 @@ class Kruskals: Generator {
         return grid
     }
 
-    class State(private val grid: Grid) {
+    class State(grid: Grid) {
         val neighbors = mutableListOf<Pair<Cell, Cell>>()
 
         private val setForCell = mutableMapOf<Cell, Int>()

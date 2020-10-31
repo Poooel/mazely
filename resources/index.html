@@ -24,7 +24,7 @@
 
 <body>
     <button id="openOptions" class="fixed top-0 left-0 h-8 w-8 m-4 transition duration-100 ease-in-out">
-        <svg id="gear" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="rgb(192,192,192)">
+        <svg id="gear" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
@@ -111,16 +111,12 @@
                                 <h5 id="start" class="cursor-pointer">‣ Start</h5>
                                 <div data-accordion="start" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                                     <div>
-                                        <label for="startColor">Start color</label>
-                                        <input id="startColor" type="color" value="#339933">
+                                        <input id="showStart" type="checkbox">
+                                        <span>Show start</span>
                                     </div>
                                     <div>
-                                        <label for="startShape">Start shape</label>
-                                        <select id="startShape">
-                                            <option value="circle">Circle</option>
-                                            <option value="square">Square</option>
-                                            <option value="cross">Cross</option>
-                                        </select>
+                                        <label for="startColor">Start color</label>
+                                        <input id="startColor" type="color" value="#339933">
                                     </div>
                                 </div>
                             </div>
@@ -128,16 +124,12 @@
                                 <h5 id="goal" class="cursor-pointer">‣ Goal</h5>
                                 <div data-accordion="goal" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                                     <div>
-                                        <label for="goalColor">Goal color</label>
-                                        <input id="goalColor" type="color" value="#cc3300">
+                                        <input id="showGoal" type="checkbox">
+                                        <span>Show goal</span>
                                     </div>
                                     <div>
-                                        <label for="goalShape">Goal shape</label>
-                                        <select id="goalShape">
-                                            <option value="circle">Circle</option>
-                                            <option value="square">Square</option>
-                                            <option value="cross">Cross</option>
-                                        </select>
+                                        <label for="goalColor">Goal color</label>
+                                        <input id="goalColor" type="color" value="#cc3300">
                                     </div>
                                 </div>
                             </div>
@@ -154,6 +146,16 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label for="seed">Seed</label>
+                            <input id="seed" type="text">
+                        </div>
+                        <div>
+                            <input id="fromSeed" type="checkbox">
+                            <span>Generate from seed</span>
                         </div>
                     </div>
                 </div>

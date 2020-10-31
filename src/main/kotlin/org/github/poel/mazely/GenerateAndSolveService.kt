@@ -5,6 +5,7 @@ import org.github.poel.mazely.entity.Grid
 import org.github.poel.mazely.entity.LongestPath
 import org.github.poel.mazely.generator.GeneratorService
 import org.github.poel.mazely.solver.SolverService
+import kotlin.random.Random
 
 object GenerateAndSolveService {
     fun generateAndSolve(generateAndSolveRequest: GenerateAndSolveRequest): GenerateAndSolveResponse {
@@ -12,9 +13,17 @@ object GenerateAndSolveService {
 
         val generator = GeneratorService.findGenerator(generateAndSolveRequest.generatorToUse)
 
-        val generatedGrid = generator.on(grid)
+        val seed = if (generateAndSolveRequest.seed.isNullOrEmpty()) {
+            Random.nextLong()
+        } else {
+            generateAndSolveRequest.seed.toLong()
+        }
 
-        val (start, goal) = getStartAndGoal(generatedGrid, generateAndSolveRequest.startAndGoalToUse)
+        val random = Random(seed)
+
+        val generatedGrid = generator.on(grid, random)
+
+        val (start, goal) = GeneratorService.getStartAndGoal(generatedGrid, generateAndSolveRequest.startAndGoalToUse)
 
         val xrayDistances = start.distances()
 
@@ -31,14 +40,8 @@ object GenerateAndSolveService {
             start = start.coordinates,
             goal = goal.coordinates,
             xray = xrayDistances.compress(),
-            pathToGoal = path
+            pathToGoal = path,
+            seed = seed.toString()
         )
-    }
-
-    private fun getStartAndGoal(grid: Grid, startAndGoalToUse: String): Pair<Cell, Cell> {
-        return when(StartAndGoal.valueOf(startAndGoalToUse.toUpperCase())) {
-            StartAndGoal.RANDOM -> Pair(grid.randomCell(), grid.randomCell())
-            StartAndGoal.FARTHEST -> LongestPath.of(grid)
-        }
     }
 }

@@ -12,6 +12,7 @@ import org.github.poel.mazely.generator.GeneratorService
 import org.github.poel.mazely.generator.Generators
 import org.github.poel.mazely.solver.SolverService
 import org.github.poel.mazely.solver.Solvers
+import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -45,6 +46,10 @@ fun Application.module() {
 
         get<Available.Solver> {
             call.respond(Solvers.values())
+        }
+
+        get<RandomLong> {
+            call.respond(Random.nextLong())
         }
 
         post<Generate> {
@@ -83,3 +88,7 @@ class Solve
 @KtorExperimentalLocationsAPI
 @Location("/generate/solve")
 class GenerateAndSolve
+
+@KtorExperimentalLocationsAPI
+@Location("/random/long")
+class RandomLong

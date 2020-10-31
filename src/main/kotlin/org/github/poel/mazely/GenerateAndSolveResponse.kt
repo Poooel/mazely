@@ -9,5 +9,6 @@ data class GenerateAndSolveResponse(
     val start: Coordinates,
     val goal: Coordinates,
     val xray: List<List<Int>>,
-    val pathToGoal: List<Coordinates>
+    val pathToGoal: List<Coordinates>,
+    val seed: String
 )

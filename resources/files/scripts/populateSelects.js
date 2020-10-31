@@ -24,14 +24,16 @@ fetch('/available/generator').then(resp => resp.json()).then(generators => {
     })
 
     field.removeAttribute('disabled')
-})
+}).then(e => {
+    fetch('/available/solver').then(resp => resp.json()).then(solvers => {
+        const field = document.querySelector('#solver')
 
-fetch('/available/solver').then(resp => resp.json()).then(solvers => {
-    const field = document.querySelector('#solver')
+        solvers.forEach(solver => {
+            populateSelect(field, solver)
+        })
 
-    solvers.forEach(solver => {
-        populateSelect(field, solver)
+        field.removeAttribute('disabled')
+    }).then(e => {
+        generateAndSolveMaze()
     })
-
-    field.removeAttribute('disabled')
 })

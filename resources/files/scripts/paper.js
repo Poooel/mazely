@@ -1,6 +1,17 @@
 var xrayLayer;
 var wallLayer;
 var pathLayer;
+var startAndGoalLayer;
+
+var globalWalls;
+var globalGrid;
+var globalXray;
+var globalSize;
+
+var globalStart;
+var globalGoal;
+
+var globalPath;
 
 function findMaxDistance(xray) {
     let max = 0;
@@ -15,7 +26,7 @@ function findMaxDistance(xray) {
 }
 
 function drawXray(xray, grid, offsetX, offsetY, settings) {
-    xrayLayer.activate()
+    setupXrayLayer(settings)
 
     const maximum = findMaxDistance(xray)
 
@@ -105,7 +116,7 @@ function drawCircle(cell, color, grid, offsetX, offsetY, settings) {
     const x3 = (boundingRectangle[0][0] + boundingRectangle[1][0]) / 2
     const y3 = (boundingRectangle[0][1] + boundingRectangle[1][1]) / 2
 
-    new Path.Circle({
+    return new Path.Circle({
         center: [x3, y3],
         radius: settings.cellSize / 4,
         fillColor: color
@@ -113,31 +124,71 @@ function drawCircle(cell, color, grid, offsetX, offsetY, settings) {
 }
 
 function drawLine(from, to, settings) {
-    new Path.Line({
-        from: from,
-        to: to,
-        strokeColor: settings.wallColor,
-        strokeWidth: settings.wallThickness,
-        strokeCap: "round"
-    })
+    globalWalls.push(
+        new Path.Line({
+            from: from,
+            to: to,
+            strokeColor: settings.wallColor,
+            strokeWidth: settings.wallThickness,
+            strokeCap: "round"
+        })
+    )
 }
 
-function setupLayers(settings) {
+function setupXrayLayer(settings) {
+    if (xrayLayer) {
+        xrayLayer.remove()
+    }
+
     xrayLayer = new Layer();
-    wallLayer = new Layer();
-    pathLayer = new Layer();
+
+    xrayLayer.blendMode = 'overlay'
 
     if (!settings.enableXray) {
         xrayLayer.visible = false
     }
 
+    xrayLayer.activate()
+}
+
+function setupWallLayer(settings) {
+    if (wallLayer) {
+        wallLayer.remove()
+    }
+
+    wallLayer = new Layer();
+
     if (!settings.enableWalls) {
         wallLayer.visible = false
     }
 
+    wallLayer.activate()
+}
+
+function setupPathLayer(settings) {
+    if (pathLayer) {
+        pathLayer.remove()
+    }
+
+    pathLayer = new Layer();
+
     if (!settings.showPath) {
         pathLayer.visible = false
     }
+
+    pathLayer.activate()
+}
+
+function setupStartAndGoalLayer() {
+    if (startAndGoalLayer) {
+        startAndGoalLayer.remove()
+    }
+
+    startAndGoalLayer = new Layer();
+
+    startAndGoalLayer.visible = true
+
+    startAndGoalLayer.activate()
 }
 
 function setupOffsets(fillWidth, fillHeight) {
@@ -145,7 +196,9 @@ function setupOffsets(fillWidth, fillHeight) {
 }
 
 function drawWalls(grid, offsetX, offsetY, settings) {
-    wallLayer.activate()
+    setupWallLayer(settings)
+
+    globalWalls = []
 
     for (let y = 0; y < grid.height; y++) {
         for (let x = 0; x < grid.width; x++) {
@@ -184,7 +237,8 @@ function drawWalls(grid, offsetX, offsetY, settings) {
 }
 
 function drawPath(path, start, goal, grid, offsetX, offsetY, settings) {
-    pathLayer.activate()
+    setupPathLayer(settings)
+    globalPath = []
 
     for (let i = 0; i < path.length; i++) {
         const cell = path[i]
@@ -194,26 +248,35 @@ function drawPath(path, start, goal, grid, offsetX, offsetY, settings) {
         const x3 = (boundingRectangle[0][0] + boundingRectangle[1][0]) / 2
         const y3 = (boundingRectangle[0][1] + boundingRectangle[1][1]) / 2
 
-        new Path.Circle({
-            center: [x3, y3],
-            radius: settings.cellSize / 4,
-            fillColor: settings.pathColor
-        })
+        globalPath.push(
+            new Path.Circle({
+                center: [x3, y3],
+                radius: settings.cellSize / 4,
+                fillColor: settings.pathColor
+            })
+        )
     }
 
-    drawCircle(start, settings.startColor, grid, offsetX, offsetY, settings)
-    drawCircle(goal, settings.goalColor, grid, offsetX, offsetY, settings)
+    setupStartAndGoalLayer()
+
+    globalStart = drawCircle(start, settings.startColor, grid, offsetX, offsetY, settings)
+    globalGoal = drawCircle(goal, settings.goalColor, grid, offsetX, offsetY, settings)
+
+    globalStart.visible = settings.showStart
+    globalGoal.visible = settings.showGoal
 }
 
 function draw(grid, start, goal, xray, path, size) {
     project.clear()
 
+    globalGrid = grid
+    globalXray = xray
+    globalSize = size
+
     let settings = getSettings()
     let offsets = setupOffsets(size.fillWidth, size.fillHeight)
 
-    setupLayers(settings)
-
     drawXray(xray, grid, offsets[0], offsets[1], settings)
-    drawPath(path, start, goal, grid, offsets[0], offsets[1], settings)
     drawWalls(grid, offsets[0], offsets[1], settings)
+    drawPath(path, start, goal, grid, offsets[0], offsets[1], settings)
 }

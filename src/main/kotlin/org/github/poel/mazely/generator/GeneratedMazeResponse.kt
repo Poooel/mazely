@@ -8,5 +8,6 @@ data class GeneratedMazeResponse (
     val maze: String,
     val start: Coordinates,
     val goal: Coordinates,
-    val xray: List<List<Int>>
+    val xray: List<List<Int>>,
+    val seed: String
 )

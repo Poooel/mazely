@@ -4,5 +4,6 @@ data class GenerateMazeRequest(
     val generatorToUse: String,
     val width: Int,
     val height: Int,
-    val startAndGoalToUse: String
+    val startAndGoalToUse: String,
+    val seed: String?
 )
