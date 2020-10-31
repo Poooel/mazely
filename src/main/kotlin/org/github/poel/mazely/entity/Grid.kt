@@ -1,5 +1,7 @@
 package org.github.poel.mazely.entity
 
+import kotlin.random.Random
+
 data class Grid(
     val height: Int,
     val width: Int,
@@ -41,8 +43,12 @@ data class Grid(
         return cells.get(y).get(x)
     }
 
-    fun randomCell(): Cell {
-        return cells.random().random()
+    fun randomCell(random: Random? = null): Cell {
+        return if (random != null) {
+            cells.random(random).random(random)
+        } else {
+            cells.random().random()
+        }
     }
 
     fun size(): Int {

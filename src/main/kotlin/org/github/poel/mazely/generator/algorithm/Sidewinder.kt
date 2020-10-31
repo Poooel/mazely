@@ -6,7 +6,7 @@ import org.github.poel.mazely.generator.Generator
 import kotlin.random.Random
 
 class Sidewinder: Generator {
-    override fun on(grid: Grid): Grid {
+    override fun on(grid: Grid, random: Random): Grid {
         grid.cells.forEach { row ->
             val run = mutableListOf<Cell>()
 
@@ -16,10 +16,10 @@ class Sidewinder: Generator {
                 val atEasternBoundary = cell.east == null
                 val atNorthernBoundary = cell.north == null
 
-                val shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && Random.nextBoolean())
+                val shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && random.nextBoolean())
 
                 if (shouldCloseOut) {
-                    val member = run.random()
+                    val member = run.random(random)
                     member.north?.let { member.link(it) }
                     run.clear()
                 } else {
