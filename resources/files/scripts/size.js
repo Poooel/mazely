@@ -1,13 +1,12 @@
-var numberOfCellsWidth
-var numberOfCellsHeight
-
-var fillWidth
-var fillHeight
-
 function computeSize() {
-    numberOfCellsWidth = Math.floor((window.innerWidth) / cellSize)
-    numberOfCellsHeight = Math.floor((window.innerHeight) / cellSize)
+    let size = {}
+    let settings = getSettings()
 
-    fillWidth = window.innerWidth - (numberOfCellsWidth * cellSize)
-    fillHeight = window.innerHeight - (numberOfCellsHeight * cellSize)
+    size.numberOfCellsWidth = Math.floor((window.innerWidth) / settings.cellSize)
+    size.numberOfCellsHeight = Math.floor((window.innerHeight) / settings.cellSize)
+
+    size.fillWidth = window.innerWidth - (size.numberOfCellsWidth * settings.cellSize)
+    size.fillHeight = window.innerHeight - (size.numberOfCellsHeight * settings.cellSize)
+
+    return size
 }

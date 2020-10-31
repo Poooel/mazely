@@ -19,7 +19,7 @@ object SolverService {
         )
     }
 
-    private fun findSolver(solverToUse: String): Solver {
+    fun findSolver(solverToUse: String): Solver {
         return when(Solvers.valueOf(solverToUse.toUpperCase())) {
             Solvers.DIJKSTRA -> Dijkstra()
         }

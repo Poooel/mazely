@@ -26,7 +26,7 @@ object GeneratorService {
         )
     }
 
-    private fun findGenerator(generatorToUse: String): Generator {
+    fun findGenerator(generatorToUse: String): Generator {
         return when(Generators.valueOf(generatorToUse.toUpperCase())) {
             Generators.BINARY_TREE -> BinaryTree()
             Generators.SIDEWINDER -> Sidewinder()
