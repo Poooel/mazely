@@ -311,25 +311,30 @@ function animatePath() {
 
 var animated = false;
 var animationIndex = 0;
-var animationSpeed = 3;
+var animationSpeed = 100;
+var animationExecuted = true;
 
 view.onFrame = function(event) {
-    if (animated && (animationIndex < (globalPath.length - 1))) {
+    if (animated && animationExecuted && (animationIndex < (globalPath.length - 1))) {
+        animationExecuted = false
+
         let cell = globalPath[animationIndex]
         let nextCell = globalPath[animationIndex + 1]
 
-        let vector = nextCell.position.subtract(cell.position)
-
-        cell.translate(vector.divide(animationSpeed))
-
-        if (vector.length < 1) {
+        cell.tweenTo({
+            position: nextCell.position
+        }, {
+            duration: animationSpeed,
+            easing: 'easeOutCubic'
+        }).then(function() {
             animationIndex++
+            animationExecuted = true
 
             cell.tweenTo({
                 opacity: 0
             }, 500)
-        }
-    } else if (animated) {
+        })
+    } else if (animated && animationExecuted) {
         let cell = globalPath[animationIndex]
 
         cell.tweenTo({

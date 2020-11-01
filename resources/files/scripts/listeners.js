@@ -98,5 +98,5 @@ document.querySelector("#pauseAnimation").addEventListener('click', e => {
 })
 
 document.querySelector("#animationSpeed").addEventListener('input', e => {
-    animationSpeed = e.target.value
+    animationSpeed = parseInt(e.target.value)
 })
