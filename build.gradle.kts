@@ -54,3 +54,7 @@ tasks.withType<Jar> {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveVersion.set("")
 }
+
+tasks.register("stage") {
+    dependsOn("shadowJar")
+}
