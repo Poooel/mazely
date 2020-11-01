@@ -273,10 +273,69 @@ function draw(grid, start, goal, xray, path, size) {
     globalXray = xray
     globalSize = size
 
+    path = fixPath(path)
+
     let settings = getSettings()
     let offsets = setupOffsets(size.fillWidth, size.fillHeight)
 
     drawXray(xray, grid, offsets[0], offsets[1], settings)
     drawWalls(grid, offsets[0], offsets[1], settings)
     drawPath(path, start, goal, grid, offsets[0], offsets[1], settings)
+}
+
+function fixPath(path) {
+    let start = path.splice(0, 1)
+    path.push(start[0])
+    return path.reverse()
+}
+
+function animatePath() {
+    for (let i = 0; i < globalPath.length - 1; i++) {
+        const cell = globalPath[i]
+        const nextCell = globalPath[i + 1]
+
+        cell.tweenTo({
+            center: nextCell.bounds.center
+        }, {
+            duration: 1000,
+            easing: 'linear'
+        }).then(function () {
+            cell.tweenTo({
+                visible: false
+            }, 500)
+        })
+
+        break
+    }
+}
+
+var animated = false;
+var animationIndex = 0;
+var animationSpeed = 3;
+
+view.onFrame = function(event) {
+    if (animated && (animationIndex < (globalPath.length - 1))) {
+        let cell = globalPath[animationIndex]
+        let nextCell = globalPath[animationIndex + 1]
+
+        let vector = nextCell.position.subtract(cell.position)
+
+        cell.translate(vector.divide(animationSpeed))
+
+        if (vector.length < 1) {
+            animationIndex++
+
+            cell.tweenTo({
+                opacity: 0
+            }, 500)
+        }
+    } else if (animated) {
+        let cell = globalPath[animationIndex]
+
+        cell.tweenTo({
+            opacity: 0
+        }, 500)
+
+        animated = false
+    }
 }

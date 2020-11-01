@@ -87,3 +87,16 @@ document.querySelector("#showGoal").addEventListener('change', function() {
 document.querySelector("#placeStartAndGoal").addEventListener('input', e => {
     generateAndSolveMaze(true)
 })
+
+document.querySelector("#startAnimation").addEventListener('click', e => {
+    animated = true
+    closeModal()
+})
+
+document.querySelector("#pauseAnimation").addEventListener('click', e => {
+    animated = false
+})
+
+document.querySelector("#animationSpeed").addEventListener('input', e => {
+    animationSpeed = e.target.value
+})
