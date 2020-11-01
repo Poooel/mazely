@@ -21,6 +21,7 @@ function getSettings() {
 
     settings.showPath = document.querySelector("#showPath").checked
     settings.pathColor = document.querySelector("#pathColor").value
+    settings.animationSpeed = document.querySelector("#animationSpeed").value
 
     return settings
 }

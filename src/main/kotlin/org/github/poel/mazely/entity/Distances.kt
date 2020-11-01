@@ -18,7 +18,7 @@ data class Distances(
     }
 
     fun cells(): List<Cell> {
-        return cells.keys.toList()
+        return cells.keys.sortedBy { cells[it] }
     }
 
     fun pathTo(goal: Cell): Distances {
