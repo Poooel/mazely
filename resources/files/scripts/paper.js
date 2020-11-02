@@ -289,7 +289,8 @@ view.onFrame = function(event) {
     if (animated && animationExecuted && (animationIndex < (globalPath.length - 1))) {
         animationExecuted = false
 
-        let cell = globalPath[animationIndex]
+        let cell = globalPath[animationIndex].clone(true)
+        globalPath[animationIndex].visible = false
         let nextCell = globalPath[animationIndex + 1]
         let settings = getSettings()
 

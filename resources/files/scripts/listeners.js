@@ -96,3 +96,13 @@ document.querySelector("#startAnimation").addEventListener('click', e => {
 document.querySelector("#pauseAnimation").addEventListener('click', e => {
     animated = false
 })
+
+document.querySelector("#rewindAnimation").addEventListener('click', e => {
+    animated = false
+    animationIndex = 0
+    animationExecuted = true
+
+    for (let i = 0; i < globalPath.length; i++) {
+        globalPath[i].visible = true
+    }
+})
