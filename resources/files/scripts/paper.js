@@ -1,14 +1,17 @@
-const cellSize = 25;
+var xrayLayer;
+var wallLayer;
+var pathLayer;
+var startAndGoalLayer;
 
-const strokeColor = "black";
-const strokeWidth = 10;
-const strokeCap = "round";
+var globalWalls;
+var globalGrid;
+var globalXray;
+var globalSize;
 
-let offsetX = 0;
-let offsetY = 0;
+var globalStart;
+var globalGoal;
 
-var firstLayer;
-var secondLayer;
+var globalPath;
 
 function findMaxDistance(xray) {
     let max = 0;
@@ -22,29 +25,59 @@ function findMaxDistance(xray) {
     return max
 }
 
-function drawXray(xray, grid) {
-    const maximum = findMaxDistance(xray)
+function drawXray(xray, grid, offsetX, offsetY, settings) {
+    setupXrayLayer(settings)
 
-    firstLayer.activate()
+    const maximum = findMaxDistance(xray)
 
     for (let i = 0; i < xray.length; i++) {
         const x = xray[i][0]
         const y = xray[i][1]
+
         const distance = xray[i][2]
         const intensity = (maximum - distance) / maximum
 
         const dark = Math.floor(255 * intensity)
         const bright = 128 + Math.floor(127 * intensity)
 
-        drawCell({ x: x, y: y }, new Color(`rgb(${dark}, ${dark}, ${bright})`), grid)
+        let color
+
+        switch (settings.xrayColor) {
+            case "black":
+                color = new Color(`rgb(${dark}, ${dark}, ${dark})`)
+                break;
+            case "blue":
+                color = new Color(`rgb(${dark}, ${dark}, ${bright})`)
+                break;
+            case "red":
+                color = new Color(`rgb(${bright}, ${dark}, ${dark})`)
+                break;
+            case "green":
+                color = new Color(`rgb(${dark}, ${bright}, ${dark})`)
+                break;
+            case "yellow":
+                color = new Color(`rgb(${bright}, ${bright}, ${dark})`)
+                break;
+            case "turquoise":
+                color = new Color(`rgb(${dark}, ${bright}, ${bright})`)
+                break;
+            case "magenta":
+                color = new Color(`rgb(${bright}, ${dark}, ${bright})`)
+                break;
+            case "grey":
+                color = new Color(`rgb(${bright}, ${bright}, ${bright})`)
+                break;
+        }
+
+        drawCell({ x: x, y: y }, color, grid, offsetX, offsetY, settings)
     }
 }
 
-function getBoundingRectangle(cell, grid) {
-    const x1 = (cell.x * cellSize) + offsetX
-    const y1 = (cell.y * cellSize) + offsetY
-    const x2 = ((cell.x + 1) * cellSize) + offsetX
-    const y2 = ((cell.y + 1) * cellSize) + offsetY
+function getBoundingRectangle(cell, grid, offsetX, offsetY, settings) {
+    const x1 = (cell.x * settings.cellSize) + offsetX
+    const y1 = (cell.y * settings.cellSize) + offsetY
+    const x2 = ((cell.x + 1) * settings.cellSize) + offsetX
+    const y2 = ((cell.y + 1) * settings.cellSize) + offsetY
 
     if (cell.x == 0 && cell.y == 0) {
         return [[0, 0], [x2, y2]]
@@ -67,8 +100,8 @@ function getBoundingRectangle(cell, grid) {
     }
 }
 
-function drawCell(cell, color, grid) {
-    const boundingRectangle = getBoundingRectangle(cell, grid)
+function drawCell(cell, color, grid, offsetX, offsetY, settings) {
+    const boundingRectangle = getBoundingRectangle(cell, grid, offsetX, offsetY, settings)
 
     new Path.Rectangle({
         from: boundingRectangle[0],
@@ -77,74 +110,113 @@ function drawCell(cell, color, grid) {
     })
 }
 
-function drawCircle(cell, color, grid) {
-    const boundingRectangle = getBoundingRectangle(cell, grid)
+function drawCircle(cell, color, grid, offsetX, offsetY, settings) {
+    const boundingRectangle = getBoundingRectangle(cell, grid, offsetX, offsetY, settings)
 
     const x3 = (boundingRectangle[0][0] + boundingRectangle[1][0]) / 2
     const y3 = (boundingRectangle[0][1] + boundingRectangle[1][1]) / 2
 
-    new Path.Circle({
+    return new Path.Circle({
         center: [x3, y3],
-        radius: cellSize / 4,
+        radius: settings.cellSize / 4,
         fillColor: color
     })
 }
 
-function drawMaze(grid, start, goal, xray) {
-    project.clear()
+function drawLine(from, to, settings) {
+    globalWalls.push(
+        new Path.Line({
+            from: from,
+            to: to,
+            strokeColor: settings.wallColor,
+            strokeWidth: settings.wallThickness,
+            strokeCap: "round"
+        })
+    )
+}
 
-    offsetX = Math.floor(fillWidth / 2);
-    offsetY = Math.floor(fillHeight / 2);
-
-    firstLayer = new Layer();
-    secondLayer = new Layer();
-
-    drawXray(xray, grid)
-
-    if (!document.querySelector("#xray").checked) {
-        firstLayer.visible = false
+function setupXrayLayer(settings) {
+    if (xrayLayer) {
+        xrayLayer.remove()
     }
 
-    secondLayer.activate()
+    xrayLayer = new Layer();
 
-    drawCircle(start, 'red', grid)
-    drawCircle(goal, 'green', grid)
+    xrayLayer.blendMode = 'overlay'
+
+    if (!settings.enableXray) {
+        xrayLayer.visible = false
+    }
+
+    xrayLayer.activate()
+}
+
+function setupWallLayer(settings) {
+    if (wallLayer) {
+        wallLayer.remove()
+    }
+
+    wallLayer = new Layer();
+
+    if (!settings.enableWalls) {
+        wallLayer.visible = false
+    }
+
+    wallLayer.activate()
+}
+
+function setupPathLayer(settings) {
+    if (pathLayer) {
+        pathLayer.remove()
+    }
+
+    pathLayer = new Layer();
+
+    if (!settings.showPath) {
+        pathLayer.visible = false
+    }
+
+    pathLayer.activate()
+}
+
+function setupStartAndGoalLayer() {
+    if (startAndGoalLayer) {
+        startAndGoalLayer.remove()
+    }
+
+    startAndGoalLayer = new Layer();
+
+    startAndGoalLayer.visible = true
+
+    startAndGoalLayer.activate()
+}
+
+function setupOffsets(fillWidth, fillHeight) {
+    return [Math.floor(fillWidth / 2), Math.floor(fillHeight / 2)]
+}
+
+function drawWalls(grid, offsetX, offsetY, settings) {
+    setupWallLayer(settings)
+
+    globalWalls = []
 
     for (let y = 0; y < grid.height; y++) {
         for (let x = 0; x < grid.width; x++) {
             const cell = grid.cells[y][x];
 
-            const x1 = (cell.x * cellSize) + offsetX
-            const y1 = (cell.y * cellSize) + offsetY
-            const x2 = ((cell.x + 1) * cellSize) + offsetX
-            const y2 = ((cell.y + 1) * cellSize) + offsetY
+            const x1 = (cell.x * settings.cellSize) + offsetX
+            const y1 = (cell.y * settings.cellSize) + offsetY
+            const x2 = ((cell.x + 1) * settings.cellSize) + offsetX
+            const y2 = ((cell.y + 1) * settings.cellSize) + offsetY
 
             if (!cell.linked(cell.east)) {
                 if (x != grid.width - 1) {
                     if (y == 0) {
-                        new Path.Line({
-                            from: [x2, 0],
-                            to: [x2, y2],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([x2, 0], [x2, y2], settings)
                     } else if (y == grid.height - 1) {
-                        new Path.Line({
-                            from: [x2, y1],
-                            to: [x2, window.innerHeight],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([x2, y1], [x2, window.innerHeight], settings)
                     } else {
-                        new Path.Line({
-                            from: [x2, y1],
-                            to: [x2, y2],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([x2, y1], [x2, y2], settings)
                     }
                 }
             }
@@ -152,32 +224,96 @@ function drawMaze(grid, start, goal, xray) {
             if (!cell.linked(cell.south)) {
                 if (y != grid.height - 1) {
                     if (x == 0) {
-                        new Path.Line({
-                            from: [0, y2],
-                            to: [x2, y2],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([0, y2], [x2, y2], settings)
                     } else if (x == grid.width - 1) {
-                        new Path.Line({
-                            from: [x1, y2],
-                            to: [window.innerWidth, y2],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([x1, y2], [window.innerWidth, y2], settings)
                     } else {
-                        new Path.Line({
-                            from: [x1, y2],
-                            to: [x2, y2],
-                            strokeColor: strokeColor,
-                            strokeWidth: strokeWidth,
-                            strokeCap: strokeCap
-                        })
+                        drawLine([x1, y2], [x2, y2], settings)
                     }
                 }
             }
         }
+    }
+}
+
+function drawPath(path, start, goal, grid, offsetX, offsetY, settings) {
+    setupPathLayer(settings)
+    globalPath = []
+
+    for (let i = 0; i < path.length; i++) {
+        const cell = path[i]
+
+        const boundingRectangle = getBoundingRectangle(cell, grid, offsetX, offsetY, settings)
+
+        const x3 = (boundingRectangle[0][0] + boundingRectangle[1][0]) / 2
+        const y3 = (boundingRectangle[0][1] + boundingRectangle[1][1]) / 2
+
+        globalPath.push(
+            new Path.Circle({
+                center: [x3, y3],
+                radius: settings.cellSize / 4,
+                fillColor: settings.pathColor
+            })
+        )
+    }
+
+    setupStartAndGoalLayer()
+
+    globalStart = drawCircle(start, settings.startColor, grid, offsetX, offsetY, settings)
+    globalGoal = drawCircle(goal, settings.goalColor, grid, offsetX, offsetY, settings)
+
+    globalStart.visible = settings.showStart
+    globalGoal.visible = settings.showGoal
+}
+
+function draw(grid, start, goal, xray, path, size) {
+    project.clear()
+
+    globalGrid = grid
+    globalXray = xray
+    globalSize = size
+
+    let settings = getSettings()
+    let offsets = setupOffsets(size.fillWidth, size.fillHeight)
+
+    drawXray(xray, grid, offsets[0], offsets[1], settings)
+    drawWalls(grid, offsets[0], offsets[1], settings)
+    drawPath(path, start, goal, grid, offsets[0], offsets[1], settings)
+}
+
+var animated = false;
+var animationIndex = 0;
+var animationExecuted = true;
+
+view.onFrame = function(event) {
+    if (animated && animationExecuted && (animationIndex < (globalPath.length - 1))) {
+        animationExecuted = false
+
+        let cell = globalPath[animationIndex].clone(true)
+        globalPath[animationIndex].visible = false
+        let nextCell = globalPath[animationIndex + 1]
+        let settings = getSettings()
+
+        cell.tweenTo({
+            position: nextCell.position
+        }, {
+            duration: settings.animationSpeed,
+            easing: 'easeOutCubic'
+        }).then(function() {
+            animationIndex++
+            animationExecuted = true
+
+            cell.tweenTo({
+                opacity: 0
+            }, 500)
+        })
+    } else if (animated && animationExecuted) {
+        let cell = globalPath[animationIndex]
+
+        cell.tweenTo({
+            opacity: 0
+        }, 500)
+
+        animated = false
     }
 }

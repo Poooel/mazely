@@ -1,10 +1,15 @@
 package org.github.poel.mazely.entity
 
+import kotlin.random.Random
+
 data class Grid(
     val height: Int,
     val width: Int,
     var cells: List<List<Cell>> = emptyList()
 ) {
+    lateinit var start: Cell
+    lateinit var goal: Cell
+
     private val chunkSize = 64
 
     init {
@@ -38,12 +43,29 @@ data class Grid(
         return cells.get(y).get(x)
     }
 
-    fun randomCell(): Cell {
-        return cells.random().random()
+    fun randomCell(random: Random? = null): Cell {
+        return if (random != null) {
+            cells.random(random).random(random)
+        } else {
+            cells.random().random()
+        }
     }
 
     fun size(): Int {
         return height * width
+    }
+
+    fun setStartAndGoal(start: Coordinates, goal: Coordinates) {
+        setStart(start)
+        setGoal(goal)
+    }
+
+    private fun setStart(coordinates: Coordinates) {
+        start = get(coordinates.x, coordinates.y)
+    }
+
+    private fun setGoal(coordinates: Coordinates) {
+        goal = get(coordinates.x, coordinates.y)
     }
 
     @ExperimentalUnsignedTypes

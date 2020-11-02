@@ -6,16 +6,16 @@ import org.github.poel.mazely.generator.Generator
 import kotlin.random.Random
 
 class GrowingTreeMixed: Generator {
-    override fun on(grid: Grid): Grid {
+    override fun on(grid: Grid, random: Random): Grid {
         val active = mutableListOf<Cell>()
-        active.add(grid.randomCell())
+        active.add(grid.randomCell(random))
 
         while (active.any()) {
-            val cell = if (Random.nextBoolean()) active.last() else active.random()
+            val cell = if (random.nextBoolean()) active.last() else active.random(random)
             val availableNeighbors = cell.neighbors().filter { it.links.isEmpty() }
 
             if (availableNeighbors.any()) {
-                val neighbor = availableNeighbors.random()
+                val neighbor = availableNeighbors.random(random)
                 cell.link(neighbor)
                 active.add(neighbor)
             } else {

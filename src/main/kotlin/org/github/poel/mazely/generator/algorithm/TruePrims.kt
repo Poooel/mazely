@@ -6,12 +6,12 @@ import org.github.poel.mazely.generator.Generator
 import kotlin.random.Random
 
 class TruePrims: Generator {
-    override fun on(grid: Grid): Grid {
+    override fun on(grid: Grid, random: Random): Grid {
         val active = mutableListOf<Cell>()
-        active.add(grid.randomCell())
+        active.add(grid.randomCell(random))
 
         val costs = mutableMapOf<Cell, Int>()
-        grid.cells.flatten().forEach { costs[it] = Random.nextInt(100) }
+        grid.cells.flatten().forEach { costs[it] = random.nextInt(100) }
 
         while (active.any()) {
             val cell = active.minByOrNull { costs[it]!! }
