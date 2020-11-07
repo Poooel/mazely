@@ -1,0 +1,1 @@
+yarn --version && ./gradlew build
