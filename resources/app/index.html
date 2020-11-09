@@ -1,22 +1,20 @@
 <!doctype html>
 
 <head>
-    <link rel="icon" href="/static/img/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="/assets/favicon.svg" sizes="any" type="image/svg+xml">
     <meta charset="utf-8">
     <!-- CSS -->
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/assets/style.css">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.11/paper-full.min.js"></script>
-
-    <!-- Local scripts -->
-    <script src="/static/scripts/cell.js"></script>
+    <!-- <script src="/static/scripts/cell.js"></script>
     <script src="/static/scripts/grid.js"></script>
     <script src="/static/scripts/network.js"></script>
     <script src="/static/scripts/settings.js"></script>
     <script src="/static/scripts/size.js"></script>
-    <script src="/static/scripts/populateSelects.js"></script>
+    <script src="/static/scripts/populateSelects.js"></script> -->
 
     <title>Maze.ly</title>
 </head>
@@ -195,12 +193,13 @@
             </svg>
         </button>
     </div>
-    <script>
+    <!-- <script>
         // Populate window object with PaperScope
         paper.install(window)
         paper.setup('maze')
     </script>
     <script src="/static/scripts/modal.js"></script>
     <script src="/static/scripts/paper.js"></script>
-    <script src="/static/scripts/listeners.js"></script>
+    <script src="/static/scripts/listeners.js"></script> -->
+    <script type="module" src="/dist/index.js"></script>
 </body>

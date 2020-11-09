@@ -20,7 +20,7 @@ async function generateAndSolveMaze(bypassFromSeed) {
 
     if (!bypassFromSeed) {
         if (!document.querySelector("#fromSeed").checked) {
-            await fetch('/random/long').then(resp => resp.text()).then(long => {
+            await fetch('/api/random/long').then(resp => resp.text()).then(long => {
                 document.querySelector("#seed").value = long
             })
         }
@@ -40,7 +40,7 @@ async function generateAndSolveMaze(bypassFromSeed) {
         seed: seed
     }
 
-    xmlHttp.open("POST", '/generate/solve', true)
+    xmlHttp.open("POST", '/api/generate/solve', true)
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(JSON.stringify(body));
 }

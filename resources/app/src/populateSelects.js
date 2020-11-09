@@ -16,7 +16,7 @@ function populateSelect(field, value) {
     field.append(option)
 }
 
-fetch('/available/generator').then(resp => resp.json()).then(generators => {
+fetch('/api/available/generator').then(resp => resp.json()).then(generators => {
     const field = document.querySelector('#generator')
 
     generators.forEach(generator => {
@@ -25,7 +25,7 @@ fetch('/available/generator').then(resp => resp.json()).then(generators => {
 
     field.removeAttribute('disabled')
 }).then(e => {
-    fetch('/available/solver').then(resp => resp.json()).then(solvers => {
+    fetch('/api/available/solver').then(resp => resp.json()).then(solvers => {
         const field = document.querySelector('#solver')
 
         solvers.forEach(solver => {

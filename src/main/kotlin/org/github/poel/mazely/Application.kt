@@ -16,6 +16,9 @@ import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+val Application.envKind get() = environment.config.property("ktor.deployment.environment").getString()
+val Application.isProd get() = envKind != "dev"
+
 @ExperimentalUnsignedTypes
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
@@ -31,13 +34,21 @@ fun Application.module() {
     }
 
     routing {
-        static {
-            resource("/", "index.html")
-            resource("*", "index.html")
-        }
+        val baseAppPath = "app/build"
+        if (isProd) {
+            static {
+                resource("/", "index.html", "$baseAppPath")
+                resource("*", "index.html", "$baseAppPath")
+            }
 
-        static("/static") {
-            resources("files")
+            static("/assets") {
+                resources("$baseAppPath/public/css")
+                resources("$baseAppPath/public/img")
+            }
+
+            static("/dist") {
+                resources("$baseAppPath/src")
+            }
         }
 
         get<Available.Generator> {
@@ -68,7 +79,7 @@ fun Application.module() {
 
 @Suppress("unused")
 @KtorExperimentalLocationsAPI
-@Location("/available")
+@Location("/api/available")
 class Available {
     @Location("/generator")
     class Generator(val available: Available)
@@ -78,17 +89,17 @@ class Available {
 }
 
 @KtorExperimentalLocationsAPI
-@Location("/generate")
+@Location("/api/generate")
 class Generate
 
 @KtorExperimentalLocationsAPI
-@Location("/solve")
+@Location("/api/solve")
 class Solve
 
 @KtorExperimentalLocationsAPI
-@Location("/generate/solve")
+@Location("/api/generate/solve")
 class GenerateAndSolve
 
 @KtorExperimentalLocationsAPI
-@Location("/random/long")
+@Location("/api/random/long")
 class RandomLong
