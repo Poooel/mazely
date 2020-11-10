@@ -1,22 +1,14 @@
 <!doctype html>
 
 <head>
-    <link rel="icon" href="/static/img/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="/assets/favicon.svg" sizes="any" type="image/svg+xml">
     <meta charset="utf-8">
     <!-- CSS -->
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/assets/style.css">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.11/paper-full.min.js"></script>
-
-    <!-- Local scripts -->
-    <script src="/static/scripts/cell.js"></script>
-    <script src="/static/scripts/grid.js"></script>
-    <script src="/static/scripts/network.js"></script>
-    <script src="/static/scripts/settings.js"></script>
-    <script src="/static/scripts/size.js"></script>
-    <script src="/static/scripts/populateSelects.js"></script>
 
     <title>Maze.ly</title>
 </head>
@@ -31,7 +23,7 @@
     <canvas id="maze" resize></canvas>
     <div id="modalBackground" class="absolute inset-0 h-full w-full bg-white bg-opacity-75 invisible opacity-0 transition-opacity duration-300 ease-in-out"></div>
     <div id="modal" class="fixed top-0 left-0 m-4 p-8 bg-gray-200 border border-solid border-gray-300 shadow-xl rounded invisible opacity-0 transition-opacity duration-300 ease-in-out">
-        <div id="settings" class="grid grid-cols-1 gap-4">
+        <form id="settings" class="grid grid-cols-1 gap-4">
             <h2 class="text-2xl font-bold font-sans">Settings</h2>
             <div class="flex flex-col space-y-2">
                 <label for="generator" class="text-lg font-semibold font-sans">Algorithm to generate the maze</label>
@@ -48,16 +40,16 @@
                         <h4 id="walls" class="cursor-pointer text-lg font-semibold font-sans">‣ Walls</h4>
                         <div data-accordion="walls" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                             <div>
-                                <input id="enableWalls" type="checkbox" class="form-checkbox" checked>
-                                <span>Enable walls</span>
+                                <input id="enableWalls" name="enableWalls" type="checkbox" class="form-checkbox" checked>
+                                <label for="enableWalls">Enable walls</label>
                             </div>
                             <div class="flex flex-col space-y-2">
                                 <label for="wallThickness">Wall thickness</label>
-                                <input id="wallThickness" type="number" min="0" max="30" value="10" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
+                                <input id="wallThickness" name="wallThickness" type="number" min="0" max="30" value="10" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
                             </div>
                             <div>
                                 <label for="wallColor">Wall color</label>
-                                <input id="wallColor" type="color">
+                                <input id="wallColor" name="wallColor" type="color">
                             </div>
                         </div>
                     </div>
@@ -66,18 +58,18 @@
                         <div data-accordion="cells"  class="grid grid-cols-1 gap-2 pl-4 hidden h-0 max-h-full">
                             <div class="flex flex-col space-y-2">
                                 <label for="cellSize">Cell size</label>
-                                <input id="cellSize" type="number" min="0" max="100" value="25" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
+                                <input id="cellSize" name="cellSize" type="number" min="0" max="100" value="25" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
                             </div>
                             <div>
                                 <label for="cellBackgroundColor">Cell background color</label>
-                                <input id="cellBackgroundColor" type="color" value="#FFFFFF">
+                                <input id="cellBackgroundColor" name="cellBackgroundColor" type="color" value="#FFFFFF">
                             </div>
                             <div>
                                 <h5 id="xray" class="cursor-pointer text-base font-semibold font-sans">‣ X-Ray</h5>
                                 <div data-accordion="xray" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                                     <div>
-                                        <input id="enableXray" type="checkbox" class="font-sans text-base">
-                                        <span>Enable X-Ray</span>
+                                        <input id="enableXray" name="enableXray" type="checkbox" class="font-sans text-base">
+                                        <label for="enableXray">Enable X-Ray</label>
                                     </div>
                                     <div class="flex flex-col space-y-2">
                                         <label for="xrayColor" class="font-sans">X-Ray color</label>
@@ -110,12 +102,12 @@
                                 <h5 id="start" class="cursor-pointer text-base font-semibold font-sans">‣ Start</h5>
                                 <div data-accordion="start" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                                     <div>
-                                        <input id="showStart" type="checkbox">
-                                        <span>Show start</span>
+                                        <input id="showStart" name="showStart" type="checkbox">
+                                        <label for="showStart">Show start</label>
                                     </div>
                                     <div>
                                         <label for="startColor">Start color</label>
-                                        <input id="startColor" type="color" value="#339933">
+                                        <input id="startColor" name="startColor" type="color" value="#339933">
                                     </div>
                                 </div>
                             </div>
@@ -123,12 +115,12 @@
                                 <h5 id="goal" class="cursor-pointer text-base font-semibold font-sans">‣ Goal</h5>
                                 <div data-accordion="goal" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full">
                                     <div>
-                                        <input id="showGoal" type="checkbox">
-                                        <span>Show goal</span>
+                                        <input id="showGoal" name="showGoal" type="checkbox">
+                                        <label for="showGoal">Show goal</label>
                                     </div>
                                     <div>
                                         <label for="goalColor">Goal color</label>
-                                        <input id="goalColor" type="color" value="#cc3300">
+                                        <input id="goalColor" name="goalColor" type="color" value="#cc3300">
                                     </div>
                                 </div>
                             </div>
@@ -136,16 +128,16 @@
                                 <h5 id="path" class="cursor-pointer text-base font-semibold font-sans">‣ Path</h5>
                                 <div data-accordion="path" class="grid grid-cols-1 gap-1 pl-4 hidden h-0 max-h-full space-y-2">
                                     <div>
-                                        <input id="showPath" type="checkbox">
-                                        <span>Show path</span>
+                                        <input id="showPath" name="showPath" type="checkbox">
+                                        <label for="showPath">Show path</label>
                                     </div>
                                     <div>
                                         <label for="pathColor">Path color</label>
-                                        <input id="pathColor" type="color" value="#ff66ff">
+                                        <input id="pathColor" name="pathColor" type="color" value="#ff66ff">
                                     </div>
                                     <div class="flex flex-col space-y-2">
                                         <span>Animation speed</span>
-                                        <input id="animationSpeed" type="number" value="100" min="1" max="10000" step="10" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
+                                        <input id="animationSpeed" name="animationSpeed" type="number" value="100" min="1" max="10000" step="10" class="font-sans border border-solid border-gray-300 hover:border-gray-400 transition duration-100 ease-in-out rounded p-1 focus:outline-none focus:shadow-outline">
                                     </div>
                                     <div class="flex space-x-2 justify-start">
                                         <button id="startAnimation" class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-1">
@@ -178,17 +170,17 @@
                     <div class="space-y-2">
                         <div class="flex flex-col">
                             <label for="seed" class="text-base font-semibold font-sans">Seed:</label>
-                            <input id="seed" type="text">
+                            <input id="seed" name="seed" type="text">
                         </div>
                         <div>
-                            <input id="fromSeed" type="checkbox" class="form-checkbox">
-                            <span class="text-base font-sans">Generate from seed</span>
+                            <input id="fromSeed" name="fromSeed" type="checkbox" class="form-checkbox">
+                            <label for="fromSeed" class="text-base font-sans">Generate from seed</label>
                         </div>
                     </div>
                 </div>
             </div>
-            <button id="generateAndSolve" class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-2 text-base font-semibold">Generate & Solve</button>
-        </div>
+            <input id="generateAndSolve" type="submit" class="border border-solid border-gray-300 hover:border-gray-400 hover:bg-opacity-25 hover:bg-white transition duration-100 ease-in-out rounded p-2 text-base font-semibold cursor-pointer" value="Generate & Solve">
+        </form>
         <button id="closeOptions" class="absolute top-0 right-0 m-4 h-8 w-8 rounded-full hover:bg-gray-300 transition duration-100 ease-in-out">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -200,7 +192,5 @@
         paper.install(window)
         paper.setup('maze')
     </script>
-    <script src="/static/scripts/modal.js"></script>
-    <script src="/static/scripts/paper.js"></script>
-    <script src="/static/scripts/listeners.js"></script>
+    <script type="module" src="/dist/index.js"></script>
 </body>

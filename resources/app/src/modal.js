@@ -20,7 +20,7 @@ function changeModalOpacity(shouldBeVisible) {
     changeModalProperty(shouldBeVisible, ['opacity-0', 'opacity-100'])
 }
 
-function openModal() {
+export function openModal() {
     changeModalVisibility(true)
     changeModalOpacity(true)
 }
@@ -31,7 +31,7 @@ function turnInvisibleListener(e) {
     e.target.removeEventListener('transitionend', turnInvisibleListener)
 }
 
-function closeModal() {
+export function closeModal() {
     changeModalOpacity(false)
 
     getModalComponents().forEach(component => {
@@ -39,20 +39,22 @@ function closeModal() {
     })
 }
 
-document.querySelector('#openOptions').addEventListener('click', () =>
-    openModal()
-)
-
-document.querySelector('#closeOptions').addEventListener('click', () =>
-    closeModal()
-)
-
-document.querySelector('#modalBackground').addEventListener('click', () => {
-    closeModal()
-    document.querySelectorAll('div[data-accordion]').forEach(item => {
-        item.classList.add('hidden', 'h-0')
+export function setupModalListeners () {
+    document.querySelector('#openOptions').addEventListener('click', () =>
+        openModal()
+    )
+    
+    document.querySelector('#closeOptions').addEventListener('click', () =>
+        closeModal()
+    )
+    
+    document.querySelector('#modalBackground').addEventListener('click', () => {
+        closeModal()
+        document.querySelectorAll('div[data-accordion]').forEach(item => {
+            item.classList.add('hidden', 'h-0')
+        })
     })
-})
+}
 
 function getAccordionLabelsAndItems() {
     const accordionItems = document.querySelectorAll('div[data-accordion]')
@@ -71,11 +73,9 @@ function toggleAccordionItem(item) {
     item.classList[fn]('hidden', 'h-0')
 }
 
-function setupAccordionListeners() {
+export function setupAccordionListeners() {
     const accordion = getAccordionLabelsAndItems()
     accordion.forEach(({label, item}) => {
         label.addEventListener('click', () => toggleAccordionItem(item))
     })
 }
-
-setupAccordionListeners()
