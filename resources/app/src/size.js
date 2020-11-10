@@ -1,12 +1,15 @@
-function computeSize() {
-    let size = {}
-    let settings = getSettings()
+import { getSettingsFromForm } from './settings'
 
-    size.numberOfCellsWidth = Math.floor((window.innerWidth) / settings.cellSize)
-    size.numberOfCellsHeight = Math.floor((window.innerHeight) / settings.cellSize)
+export function computeSize() {
+    const {cellSize} = getSettingsFromForm()
+    const {innerWidth, innerHeight} = window
+    const numberOfCellsWidth = Math.floor(innerWidth / cellSize)
+    const numberOfCellsHeight = Math.floor(innerHeight / cellSize)
 
-    size.fillWidth = window.innerWidth - (size.numberOfCellsWidth * settings.cellSize)
-    size.fillHeight = window.innerHeight - (size.numberOfCellsHeight * settings.cellSize)
-
-    return size
+    return {
+        numberOfCellsWidth,
+        numberOfCellsHeight,
+        fillWidth: innerWidth - (numberOfCellsWidth * cellSize),
+        fillHeight: innerHeight - (numberOfCellsHeight * cellSize)
+    }
 }

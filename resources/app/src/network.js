@@ -1,46 +1,22 @@
-async function generateAndSolveMaze(bypassFromSeed) {
-    let size = computeSize()
+export function getRandomSeed() {
+    return fetch('/api/random/long').then(resp => resp.text())
+}
 
-    const xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == XMLHttpRequest.DONE) {
-            if (xmlHttp.status == 200) {
-                const data = JSON.parse(xmlHttp.responseText)
-
-                let grid = new Grid(data.height, data.width)
-                grid.uncompress(data.maze)
-
-                document.querySelector("#seed").value = data.seed
-
-                draw(grid, data.start, data.goal, data.xray, data.pathToGoal, size);
-            }
+export function getMazeAndSolution(mazeConfig) {
+    return fetch('/api/generate/solve',
+    {
+        body: mazeConfig,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         }
-    }
+    }).then(resp => resp.json())
+}
 
-    if (!bypassFromSeed) {
-        if (!document.querySelector("#fromSeed").checked) {
-            await fetch('/api/random/long').then(resp => resp.text()).then(long => {
-                document.querySelector("#seed").value = long
-            })
-        }
-    }
+export function getGenerators() {
+    return fetch('/api/available/generator').then(resp => resp.json())
+}
 
-    const generator = document.querySelector("#generator").value
-    const solver = document.querySelector("#solver").value
-    const startAndGoalToUse = document.querySelector("#placeStartAndGoal").value
-    const seed = document.querySelector("#seed").value
-
-    const body = {
-        width: size.numberOfCellsWidth,
-        height: size.numberOfCellsHeight,
-        generatorToUse: generator,
-        startAndGoalToUse: startAndGoalToUse,
-        solverToUse: solver,
-        seed: seed
-    }
-
-    xmlHttp.open("POST", '/api/generate/solve', true)
-    xmlHttp.setRequestHeader('Content-Type', 'application/json');
-    xmlHttp.send(JSON.stringify(body));
+export function getSolvers() {
+    return fetch('/api/available/solver').then(resp => resp.json())
 }

@@ -3,9 +3,6 @@
 
 const basePath = 'resources/app'
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL)
-
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   mount: {

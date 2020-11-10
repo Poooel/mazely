@@ -1,11 +1,11 @@
-class Cell {
+export class Cell {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.north = null;
-        this.south = null;
-        this.east = null;
-        this.west = null;
+        this.x = x
+        this.y = y
+        this.north = null
+        this.south = null
+        this.east = null
+        this.west = null
         this.links = []
     }
 

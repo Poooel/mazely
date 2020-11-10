@@ -1,3 +1,11 @@
-import {allo} from './mdr'
+import { setupListeners, submitForm } from './listeners'
+import { setupModalListeners, setupAccordionListeners } from './modal'
+import { populateGenerators, populateSolvers, populateSeed } from './populateFields'
 
-allo()
+setupListeners()
+setupModalListeners()
+setupAccordionListeners()
+
+Promise.all([populateGenerators(), populateSolvers(), populateSeed()]).then(() => {
+    submitForm()
+})
