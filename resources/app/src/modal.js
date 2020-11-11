@@ -55,27 +55,3 @@ export function setupModalListeners () {
         })
     })
 }
-
-function getAccordionLabelsAndItems() {
-    const accordionItems = document.querySelectorAll('div[data-accordion]')
-    return [...accordionItems].map((item) => {
-        return {
-            item,
-            label: document.querySelector(`#${item.getAttribute('data-accordion')}`)
-        }
-    })
-}
-
-function toggleAccordionItem(item) {
-    const isClosed = item.classList.contains('hidden')
-    const fn = isClosed ? 'remove' : 'add'
-
-    item.classList[fn]('hidden', 'h-0')
-}
-
-export function setupAccordionListeners() {
-    const accordion = getAccordionLabelsAndItems()
-    accordion.forEach(({label, item}) => {
-        label.addEventListener('click', () => toggleAccordionItem(item))
-    })
-}

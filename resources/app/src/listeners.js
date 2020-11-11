@@ -18,23 +18,28 @@ export function setupListeners()  {
         canvasSettings.pathLayer.visible = this.checked
     })
     
-    document.querySelector("form#settings").addEventListener('submit', e => {
-        console.log('e', e)
+    // document.querySelector("form#settings").addEventListener('submit', e => {
+    //     e.preventDefault()
+        
+    //     const formData = new FormData(e.target)
+    document.querySelector("input#generateAndSolve").addEventListener('click', e => {
         e.preventDefault()
         
-        console.log('e', e)
-        const formData = new FormData(e.target)
-        console.log('formData', formData)
+        const formData = new FormData(document.querySelector('form#settings'))
         const size = computeSize()
         const settings = getSettingsFromData(formData)
-        formData.append('width', size.numberOfCellsWidth)
-        formData.append('height', size.numberOfCellsHeight)
+        Object.assign(settings, {
+            width: size.numberOfCellsWidth,
+            height: size.numberOfCellsHeight
+        })
     
         if (!settings.fromSeed) {
-            formData.delete('seed')
+            delete settings.seed
         }
+
+        console.log(settings)
     
-        getMazeAndSolution(formData).then(data => {
+        getMazeAndSolution(settings).then(data => {
             const grid = new Grid(data.height, data.width)
             grid.uncompress(data.maze)
     
@@ -42,6 +47,8 @@ export function setupListeners()  {
     
             draw(grid, data.start, data.goal, data.xray, data.pathToGoal, size)
         })
+
+        return false
     })
     
     window.addEventListener('resize', e => {
@@ -116,5 +123,6 @@ export function setupListeners()  {
 }
 
 export function submitForm() {
-    document.querySelector("form#settings").requestSubmit()
+    document.querySelector("input#generateAndSolve").click()
+    // document.querySelector('form#settings').requestSubmit()
 }

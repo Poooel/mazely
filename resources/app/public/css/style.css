@@ -22,3 +22,14 @@ canvas[resize] {
     -webkit-transform: rotate(90deg);
     opacity: 1.0;
 }
+
+details > summary ~ *:not(details) {
+    opacity: 0;
+    margin-left: -1rem;
+    transition: opacity 0.25s ease-in-out, margin-left 0.25s ease-in-out;
+}
+
+details[open] > summary ~ *:not(details) {
+    opacity: 1;
+    margin-left: 0rem;
+}

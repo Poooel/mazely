@@ -5,7 +5,7 @@ export function getRandomSeed() {
 export function getMazeAndSolution(mazeConfig) {
     return fetch('/api/generate/solve',
     {
-        body: mazeConfig,
+        body: JSON.stringify(mazeConfig),
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

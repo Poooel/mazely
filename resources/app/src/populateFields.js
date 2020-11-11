@@ -20,7 +20,7 @@ function addValueToSelect(field, value) {
 
 export function populateGenerators() {
     return getGenerators().then(generators => {
-        const field = document.querySelector('#generator')
+        const field = document.querySelector('#generatorToUse')
         generators.forEach(generator => {
             addValueToSelect(field, generator)
         })
@@ -30,7 +30,7 @@ export function populateGenerators() {
 
 export function populateSolvers() {
     return getSolvers().then(solvers => {
-        const field = document.querySelector('#solver')
+        const field = document.querySelector('#solverToUse')
         solvers.forEach(solver => {
             addValueToSelect(field, solver)
         })
