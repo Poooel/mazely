@@ -1,5 +1,6 @@
 package org.github.poel.mazely.entity
 
+import java.math.BigInteger
 import kotlin.random.Random
 
 data class Grid(
@@ -9,8 +10,6 @@ data class Grid(
 ) {
     lateinit var start: Cell
     lateinit var goal: Cell
-
-    private val chunkSize = 64
 
     init {
         prepareGrid()
@@ -68,8 +67,7 @@ data class Grid(
         goal = get(coordinates.x, coordinates.y)
     }
 
-    @ExperimentalUnsignedTypes
-    fun compress(): String {
+    override fun toString(): String {
         val binaryRepresentation = cells.map { row ->
             row.map { cell ->
                 listOf(
@@ -80,26 +78,24 @@ data class Grid(
         }.flatten()
             .joinToString("")
 
-        return binaryRepresentation
-            .chunked(chunkSize)
-            .map { it.padEnd(chunkSize, '0') }
-            .map { it.toULong(2) }
-            .joinToString(",")
+        return BigInteger(binaryRepresentation, 2).toString()
     }
 
-    @ExperimentalUnsignedTypes
-    fun uncompress(compressedForm: String) {
-        val binaryRepresentation = compressedForm
-            .split(",")
-            .joinToString("") { it.toULong().toString(2).padStart(Long.SIZE_BITS, '0') }
+    fun from(stringRep: String) {
+        val binaryRep = BigInteger(stringRep).toString(2)
+        val paddedBinaryRep = padMissingZeroes(binaryRep)
 
         var i = 0
 
         cells.forEach { row ->
             row.forEach { cell ->
-                if (binaryRepresentation[i++] != '0') cell.north?.let { cell.link(it) }
-                if (binaryRepresentation[i++] != '0') cell.east?.let { cell.link(it) }
+                if (paddedBinaryRep[i++] != '0') cell.north?.let { cell.link(it) }
+                if (paddedBinaryRep[i++] != '0') cell.east?.let { cell.link(it) }
             }
         }
+    }
+
+    private fun padMissingZeroes(binaryRep: String): String {
+        return binaryRep.padStart(size() * 2, '0')
     }
 }

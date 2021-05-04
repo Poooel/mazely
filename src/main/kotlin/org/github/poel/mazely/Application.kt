@@ -1,18 +1,22 @@
 package org.github.poel.mazely
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.locations.*
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
+import io.ktor.locations.*
 import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import org.github.poel.mazely.common.GeneratorAlgorithm
+import org.github.poel.mazely.common.PathAlgorithm
+import org.github.poel.mazely.common.SolverAlgorithm
 import org.github.poel.mazely.generator.GeneratorService
-import org.github.poel.mazely.generator.Generators
+import org.github.poel.mazely.render.RenderService
+import org.github.poel.mazely.request.GenerateRequest
+import org.github.poel.mazely.request.SolveRequest
 import org.github.poel.mazely.solver.SolverService
-import org.github.poel.mazely.solver.Solvers
-import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -20,48 +24,41 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module() {
+    val generatorService = GeneratorService()
+    val solverService = SolverService()
+    val renderService = RenderService()
+
     install(Locations)
 
     install(ContentNegotiation) {
-        jackson {}
-    }
-
-    install(Compression) {
-        gzip()
+        jackson {
+            setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+        }
     }
 
     routing {
-        static {
-            resource("/", "index.html")
-            resource("*", "index.html")
-        }
-
-        static("/static") {
-            resources("files")
-        }
-
         get<Available.Generator> {
-            call.respond(Generators.values())
+            call.respond(GeneratorAlgorithm.values())
         }
 
         get<Available.Solver> {
-            call.respond(Solvers.values())
+            call.respond(SolverAlgorithm.values())
         }
 
-        get<RandomLong> {
-            call.respond(Random.nextLong())
+        get<Available.Path> {
+            call.respond(PathAlgorithm.values())
         }
 
         post<Generate> {
-            call.respond(GeneratorService.generateMaze(call.receive()))
+            call.respond(generatorService.generate(call.receive()))
         }
 
         post<Solve> {
-            call.respond(SolverService.solveMaze(call.receive()))
+            call.respond(solverService.solve(call.receive()))
         }
 
-        post<GenerateAndSolve> {
-            call.respond(GenerateAndSolveService.generateAndSolve(call.receive()))
+        post<Render.Svg> {
+            call.respond(renderService.renderSvg(call.receive()))
         }
     }
 }
@@ -75,6 +72,9 @@ class Available {
 
     @Location("/solver")
     class Solver(val available: Available)
+
+    @Location("/path")
+    class Path(val available: Available)
 }
 
 @KtorExperimentalLocationsAPI
@@ -86,9 +86,8 @@ class Generate
 class Solve
 
 @KtorExperimentalLocationsAPI
-@Location("/generate/solve")
-class GenerateAndSolve
-
-@KtorExperimentalLocationsAPI
-@Location("/random/long")
-class RandomLong
+@Location("/render")
+class Render {
+    @Location("/svg")
+    class Svg(val render: Render)
+}

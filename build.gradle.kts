@@ -5,7 +5,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.32"
     application
     id("com.github.johnrengelman.shadow") version "6.1.0"
 }
@@ -27,10 +27,11 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-locations:$ktor_version")
     implementation("io.ktor:ktor-jackson:$ktor_version")
+    implementation("org.redundent:kotlin-xml-builder:1.7.2")
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "12"
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 application {

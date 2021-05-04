@@ -1,4 +1,7 @@
-package org.github.poel.mazely.entity
+package org.github.poel.mazely.generator
+
+import org.github.poel.mazely.entity.Cell
+import org.github.poel.mazely.entity.Grid
 
 object LongestPath {
     fun of(grid: Grid): Pair<Cell, Cell> {

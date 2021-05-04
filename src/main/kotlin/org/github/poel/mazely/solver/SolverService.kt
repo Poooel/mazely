@@ -1,27 +1,22 @@
 package org.github.poel.mazely.solver
 
 import org.github.poel.mazely.entity.Grid
-import org.github.poel.mazely.solver.algorithm.Dijkstra
+import org.github.poel.mazely.request.SolveRequest
+import org.github.poel.mazely.response.SolveResponse
 
-object SolverService {
-    fun solveMaze(solveMazeRequest: SolveMazeRequest): SolvedMazeResponse {
-        val grid = Grid(solveMazeRequest.height, solveMazeRequest.width)
+class SolverService {
+    fun solve(solveRequest: SolveRequest): SolveResponse {
+        val size = solveRequest.generateResponse.generateRequest.size
+        val grid = Grid(size.height, size.width)
 
-        grid.uncompress(solveMazeRequest.compressedMaze)
-        grid.setStartAndGoal(solveMazeRequest.start, solveMazeRequest.goal)
+        grid.from(solveRequest.generateResponse.maze)
+        grid.setStartAndGoal(solveRequest.generateResponse.start, solveRequest.generateResponse.end)
 
-        val solver = findSolver(solveMazeRequest.solverToUse)
+        val path = solveRequest.solverAlgorithm.solver.solve(grid).joinToString(",") { it.coordinates.toString() }
 
-        val path = solver.solve(grid).map { it.coordinates }
-
-        return SolvedMazeResponse(
-            pathToGoal = path
+        return SolveResponse(
+            path = path,
+            solveRequest = solveRequest
         )
-    }
-
-    fun findSolver(solverToUse: String): Solver {
-        return when(Solvers.valueOf(solverToUse.toUpperCase())) {
-            Solvers.DIJKSTRA -> Dijkstra()
-        }
     }
 }
